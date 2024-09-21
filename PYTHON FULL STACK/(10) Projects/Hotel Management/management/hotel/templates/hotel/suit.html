@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'hotel/master.html' %}
+    {% load static %}
+    <script src="{%static 'js/main.js' %}"></script>
+    <title>
+        {% block title%}
+            King Room
+        {% endblock %}
+    </title>
+</head>
+<body>
+    {% block content %}
+    <div id="d12" >
+        <div id="d13">
+            <img src="{%static 'images/su1.jpg' %}" alt=""  width="550px" height="500px" >
+        </div>
+        <div id="d13" >
+            <h1>SUIT ROOM</h1>
+            <div style="text-align: justify;">
+                <h5>About Room: </h5>
+                These hotel room have one bedrooms & a spacious living area.
+                <br> <br>
+                <h5>Facilities: </h5>
+                <li>Bed: 1</li>
+                <li>TV : Available</li>
+                <li>Wifi : Available</li>
+                <li>A private bathroom and a shower</li>
+                <li>Work desk and a wardrobe</li>
+                <li>View:  a beautiful view of city and garden</li>
+                <li>Pricing : 4000 rupyees Per Day</li>
+                <br>
+                <div>
+                    <form action="{% url 'booking'%}" method="post" > 
+                        {% csrf_token %}
+                        <div style="float: left; padding-left: 10px;">
+                            Check-in-date <br>
+                            <input type="date" name="CheckInDate"> <br><br>
+                        </div>
+                        <div style="float: left; padding-left: 10px;">
+                            Check-out-date <br>
+                            <input type="date" name="CheckOutDate">  <br><br>
+                        </div>
+                        <div style="float: left; padding-left: 10px;">
+                            Childrens <br>
+                            <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                        </div>
+                        <div style="float: left; padding-left: 10px;">
+                            Adults <br>
+                            <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                        </div>
+                        <div style="text-align: center;">
+                            <button type="submit" class="d100" name="button4" value="button4">Check Availbility</button>
+                        </div>
+                      </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+    
+</body>
+</html>

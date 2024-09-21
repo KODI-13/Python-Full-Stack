@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1> Sending data from function created in views.py</h1><br>
+{{data}}
+
+<h1>For loop on above data which is imported from function of views.py </h1>
+{% for i in data %}
+{{i}}<br>
+{% endfor %}
+
+<h1>Using zinza template defining variable and printing it in html pages </h1><br>
+{%with age=21 %}
+age = {{age}} 
+{%endwith%}
+
+<h1>if statement using zinza template </h1>
+{%with age=21 %}
+{% if age > 18 %}
+{{age}} 
+{%endif%}
+{%endwith%}
+
+<h1>if-else statement using zinza template </h1>
+Example 1 -->
+{%with age=2 %}
+{% if age > 18 %}
+{{age}} <br>
+{% else %}
+{{"Not Eligible"}}<br>
+{%endif%}
+{%endwith%}
+
+Example 2 -->
+{%with age=21 %}
+{% if age > 18 %}
+{{"Eligible"}} <br>
+{% else %}
+{{"Not Eligible"}}<br>
+{%endif%}
+{%endwith%}
+
+<h1>if-elif-else statement using zinza template </h1>
+{%with num=-2 %}
+{% if num > 0 %}
+{{"Positive"}} <br>
+{% elif num == 0 %}
+{{"zero"}}
+{% else %}
+{{"Negative"}}<br>
+{%endif%}
+{%endwith%}
+
+</body>
+</html>

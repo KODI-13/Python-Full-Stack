@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'hotel/master.html' %}
+    {% load static %}
+
+    <title>
+        {% block title%}
+            Home
+        {% endblock %}
+    </title>
+</head>
+<body>
+    {% block content %}
+    <div id="d5">
+          <div style=" width:100%; height:600px;">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" >
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{%static 'images/img1.jpg' %}"  width="100%" height="600px" alt="..." >
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{%static 'images/img22.jpg' %}"  width="100%" height="600px" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{%static 'images/img3.jpg' %}"  width="100%" height="600px" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{%static 'images/img4.jpg' %}"  width="100%" height="600px" alt="...">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+                </a>
+            </div>
+          </div>
+
+
+        <div style="height: 500px; width:100%;">
+            <div style="height: 400px; width: 40%; float: left; margin-top: 60px; " >
+              <div style="height: 400px; width: 450px; background-color: rgb(118, 118, 118); margin-left: 60px; border-radius: 15px;"> <br>
+                <form action="{% url 'booking'%}?id={{id}}" style="padding-left: 150px;" method="post"> 
+                  {% csrf_token %}
+                  Check-in-date <br>
+                  <input type="date" name="CheckInDate"> <br><br>
+                  Check-out-date <br>
+                  <input type="date" name="CheckOutDate">  <br><br>
+                  Childrens <br>
+                  <input type="number" name="ChildCount" style="width: 138px;" min="0">  <br><br>
+                  Adults <br>
+                  <input type="number" name="AdultCount" style="width: 138px;" min="0">  <br><br>
+                  <div style="padding-left: 3px;" >
+                    <button type="submit" class="d100" name="button1"  value="button1">Check Availbility</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div  style="height: 400px; width: 60%; float: left; margin-top: 60px; text-align: center; font-family: Times New Roman; text-align: center;">
+              <h1 id="d2">Unpretentiously luxurious</h1>
+                  <h3 id="d7">
+                    "Welcome to our hotel, where your comfort is our priority. Enjoy the convenience of our well-appointed rooms, sumptuous dining options, and attentive concierge services. Whether you're here for business or leisure, our facilities, including fitness centers and meeting rooms, cater to your needs. Your safety is assured with our state-of-the-art security measures. Special occasions are made memorable with our event planning services. We are also pet-friendly, making us the perfect choice for all travelers. Experience the perfect blend of luxury, convenience, and hospitality at our hotel."</h3>
+            </div>
+          </div>
+
+
+          <div style="width: 100%; height: 450px; float: left;  margin-bottom: 40px ;" id="targtDiv" >
+            <h1><center> Room & Rent</center> </h1>
+                <div class="card-deck" style="color: black; padding: 12px;" >
+                  <div class="card" id="d8">
+                    <img src="{%static 'images/img3.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title" id="d2">King Room</h5>
+                      <p class="card-text">This is a hotel room with a king size bed. One or more individuals can comfortably occupy the room. </p>
+                    </div>
+                    <div class="card-footer" id="d9" >
+                      <button type="button" id="d10"><a href="/king/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+                  <div class="card"id="d8">
+                    <img src="{%static 'images/q1.jpg' %}" class="card-img-top" alt="..." height="125px">
+                    <div class="card-body">
+                      <h5 class="card-title" id="d2">Queen Room</h5>
+                      <p class="card-text">It's a beautiful room containing a queen size bed. One or two people may occupy the room.</p>
+                    </div>
+                    <div class="card-footer" id="d9">
+                      <button type="button" id="d10"><a href="/queen/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+                  <div class="card" id="d8">
+                    <img src="{%static 'images/su1.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title" id="d2">Suit Room</h5>
+                      <p class="card-text"> These hotel room have one or two different bedrooms & a spacious living area. </p>
+                    </div>
+                    <div class="card-footer" id="d9">
+                      <button type="button" id="d10"><a href="/suit/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+
+                  <div class="card" id="d8">
+                    <img src="{%static 'images/s1.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title" id="d2">Single Room</h5>
+                      <p class="card-text">This is a hotel room with a single bed. One-two individuals can comfortably occupy the room. </p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                    <div class="card-footer" id="d9">
+                      <button type="button" id="d10"><a href="/single/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+
+                  <div class="card" id="d8">
+                    <img src="{%static 'images/d1.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title" id="d2">Double Room</h5>
+                      <p class="card-text">This is a hotel room with a double bed. two individuals can comfortably occupy the room.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                    <div class="card-footer" id="d9">
+                      <button type="button" id="d10"><a href="/double/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+
+                  <div class="card" id="d8">
+                    <img src="{%static 'images/t1.jpg' %}" class="card-img-top" alt="..." height="125px">
+                    <div class="card-body">
+                      <h5 class="card-title"  id="d2">Triple Room</h5>
+                      <p class="card-text">It's a beautiful room containing a three bed. three people may occupy the room.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                    <div class="card-footer" id="d9">
+                      <button type="button" id="d10"><a href="/triple/" id="d11">Room & Rent</a></button>
+                    </div>
+                  </div>
+                  
+                </div>
+        </div>
+
+
+
+        <div class="Container" style = "height: 300px; width: 100% ; float :left;  margin-bottom: 30px ;" >
+          <h2><center>Our Staff</center></h2>
+            <section class="customer-logos slider">
+              <div class="slide" style="float: left; padding-left: 18px; text-align: center;">
+                <img src="{%static 'images/p1.jpg' %}" alt="" height="200px" width="190px">
+                <h5>Ashley</h5>
+              </div>
+              <div class="slide"  style="float: left;  padding-left: 18px; text-align: center;" >
+                <img src="{%static 'images/p2.jpg' %}" alt="" height="200px" width="190px">
+                <h5>Kendle</h5>
+              </div>
+              <div class="slide"  style="float: left;  padding-left: 18px; text-align: center;">
+                <img src="{%static 'images/p3.jpg' %}" alt="" height="200px" width="190px">
+                <h5>Casey</h5>
+              </div>
+              <div class="slide"  style="float: left; padding-left: 18px; text-align: center;">
+                <img src="{%static 'images/p4.jpg' %}" alt="" height="200px" width="200px">
+                <h5>Bella</h5>
+              </div> 
+              <div class="slide"  style="float: left; padding-left: 18px; text-align: center;">
+                <img src="{%static 'images/p5.jpg' %}" alt="" height="200px" width="190px">
+                <h5>Sofia</h5>
+              </div> 
+              <div class="slide"  style="float: left; padding-left: 18px; text-align: center;">
+                <img src="{%static 'images/p6.jpg' %}" alt="" height="200px" width="190px">
+                <h5>Lisa</h5>
+              </div> 
+
+            </section>
+        </div>
+
+  </div>
+
+    {% endblock %}
+    
+</body>
+</html>

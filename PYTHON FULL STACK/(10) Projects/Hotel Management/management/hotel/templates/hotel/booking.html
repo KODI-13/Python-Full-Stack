@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'hotel/master.html' %}
+    {% load static %}
+    <script src="{%static 'js/main.js' %}"></script>
+    <title>
+        {% block title%}
+            Booking
+        {% endblock %}
+    </title>
+</head>
+<body>
+    {% block content %}
+    <div id="d12">
+        <div id="d2"  style="padding-top: 10px;">
+        <h1>Hotel Trikut Booking</h1>
+        </div>
+        <!-- {{data}} -->
+        {% if button_clicked1 == "button1" %}
+                {{data}}
+                <!-- {% for i in data %} -->
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate" value="{{data.Check_In_Date}}">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate" value="{{data.Check_Out_Date}}">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;" value="{{data.Child_Count}}"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;" value="{{Adult_Count}}"> <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+                <!-- {% endfor %} -->
+        {% elif  button_clicked1 == "button2" %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            {{data}}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+
+        {% elif  button_clicked1 == "button3" %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+
+        {% elif  button_clicked1 == "button4" %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            {{data}}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+
+        {% elif  button_clicked1 == "button5" %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            {{data}}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+                
+        {% elif  button_clicked1 == "button6" %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            {{data}}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+
+        {% else %}
+                    <div style="width: 600px; height: 600px; margin-left: 340px ; padding :20px;">
+                        <form action="" method="post" style="text-align: center;" > 
+                            {% csrf_token %}
+                            {{data}}
+                            <div style="float: left; padding-left: 10px;">
+                                Check-in-date <br>
+                                <input type="date" name="CheckInDate"> <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Check-out-date <br>
+                                <input type="date" name="CheckOutDate">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Childrens <br>
+                                <input type="number" name="ChildCount" style="width: 120px;">  <br><br>
+                            </div>
+                            <div style="float: left; padding-left: 10px;">
+                                Adults <br>
+                                <input type="number" name="AdultCount" style="width: 120px;">  <br><br>
+                            </div>
+
+                            <!-- <div>
+                                <button type="submit" class="d100">Check Availbility</button>
+                            </div> -->
+                        </form>
+                    </div>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+    
+</body>
+</html>

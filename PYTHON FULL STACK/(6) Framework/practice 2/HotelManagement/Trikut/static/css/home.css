@@ -1,0 +1,33 @@
+#d1{
+    color: white;
+}
+
+#d2{
+    color:gold;
+}
+
+#d3{
+    float: left;
+}
+
+#d4{
+    /* padding: 0;
+    margin: 0; */
+    position: absolute;
+    z-index: 1;
+}
+
+#d5{
+    /* padding: 0;
+    margin: 0; */
+    height:50px ;
+    width: 1450px;
+    position: absolute;
+    z-index: 2;
+    /* margin-top: 20px; */
+    text-align: center;
+}
+
+nav .a{
+    text-align: center;
+}

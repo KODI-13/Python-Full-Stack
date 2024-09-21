@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'student/master.html' %}
+    <title>
+        {% block title %}
+            Display
+        {% endblock %}
+    </title>
+</head>
+<body>
+    {% block content %}
+
+    <span style="text-align: center;">
+        <h1 class="display-5">STUDENT DETAILS</h1>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">City</th>
+                <th scope="col">College Name</th>
+                <th scope="col">Degree</th>
+                <th scope="col">Passing year</th>
+                <th scope="col">Course</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in data%}
+              <tr>
+                <th><a href="/update/{{i.id}}">{{i.name}}</a></th>
+                <td>{{i.city}}</td>
+                <td>{{i.college}}</td>
+                <td>{{i.degree}}</td>
+                <td>{{i.year}}</td>
+                <td>{{i.course}}</td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+
+    </span>
+    {% endblock %}
+    
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'Trikut/master.html' %}
+    <title>
+        {% block title %}
+            Home
+        {% endblock %}
+    </title>
+</head>
+<body>
+    {% block content %}
+    <!-- Images -->
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" id="d4" >
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://www.germanfoodie.com/wp-content/uploads/2017/11/top-hotels-in-Las-Vegas-2.jpg" width="1450px" height="550px" alt="...">   <!--  class="d-block w-100" -->
+          </div>
+          <div class="carousel-item">
+            <img src="https://media.architecturaldigest.in/wp-content/uploads/2017/04/Asian-Paints-Swimming-Pool-Shangrila-Shard.jpg" width="1450px" height="550px" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="https://th.bing.com/th/id/R.fd7b996f2e00e3715d4211863b2fdabf?rik=hNpMMNtcoHdgdQ&riu=http%3a%2f%2fwww.bestwesternplusmeridian.com%2fContent%2fimages%2fQueen-Room.jpg&ehk=KCbSmDyFZVzRHEPvo3ervhhEh3CHbDcQQbR%2btZeyFuo%3d&risl=&pid=ImgRaw&r=0" width="1450px" height="550px"alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- book now box and right side info-->
+      <div style="height: 500px; width: 1450px;">
+        <div style="height: 500px; width: 600px; float: left; margin-top: 60px; " >
+          <div style="height: 400px; width: 500px; background-color: aqua; margin-left: 60px;"> <br>
+            <form action="" style="margin-left: 150px;"> 
+              <span >Check-in-date <br>
+              <input type="date" name="checkInDate"> <br><br>
+              <span >Check-out-date <br>
+              <input type="date" name="checkOutDate">
+             </span>
+
+            </form>
+          </div>
+        </div>
+
+        <div  style="height: 400px; width: 850px; float: left;  background-color: black; margin-top: 60px;">
+
+        </div>
+      </div>
+    {% endblock %}
+ 
+</body>
+</html>

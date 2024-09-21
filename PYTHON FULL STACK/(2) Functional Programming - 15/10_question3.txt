@@ -1,0 +1,123 @@
+"""
+Q1 . what is functional programming
+    Functional programming ---> it has two parts funcation defination and calling ....
+                                it is called as user-defined function
+                                it does not run the function until we called it
+                                we can reuse it
+                                code length reduces
+                                we can import function from one file to another file
+
+        a) function defination --> syntax :
+                                            def fun_name():                         where def is keyword
+                                                #fun_body 
+        b) function calling --> syntax : 
+                                            fun_name()
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Q2. Adv of functional programming
+                                 we can reuse it
+                                code length reduces
+                                we can import function from one file to another file
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q3 . what is global scope and local scope 
+    Global scope --> The entire space out of the function is called as global scope
+                 The variable defined in the global scope/space is called as global scope variable
+                 global scope data can be accessed in global scope 
+                 global scope data can be accessed in local scope but can't change without permission 
+                 permission means using global keyword with the data that we want to access
+
+    Local scope --> the entire space inside the function is called as local scope
+                    The variable defined in the local scope/space is called as local scope variable
+                    local scope data can be accessed in the local scope
+                    local scope data can't be accessed in the global scope
+                    we cam access local scope data in global scope using return keyword
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q4. what are types of argument in functional programming 
+    Argument --> The data pass in function calling is called as argument
+    parameter --> The data get in function defination is called as parameter
+
+                                    def fn(parameter):
+                                        pass
+
+                                    fn(argument)
+
+    There are four types of argument
+    1) Positional argument --> It is mendatory to maintain the position
+                            number of argument == number of parameter
+
+    2) Keyword argument --> Data is in form of key and vakue
+                            There is no need to maintain the position
+                            number of argument == number of parameter
+                        
+    3) Default argument --> The default parameter can be changed by updated argument
+                            The value after default values (parameter) must be default values 
+    4) Arbitary argument
+        Positional aribitary argument --> use when we have to pass comma seperated value
+                                         The data is give in form of tuple
+                                         get using *
+        def fn(*X)
+            pass
+        fn(12,23,43,23,12,32)
+
+        Keyword arbitary argument -->  use when we have to pass key and value..i.e relational date  
+                                       The data is give in form of dictionary
+                                       get using *
+        def fn(**X)
+            pass
+        fn(name = "deep ",age = 21,city = "pune")
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q5. Explain arbitary argument
+    4) Arbitary argument
+            Positional aribitary argument --> use when we have to pass comma seperated value
+                                             The data is give in form of dictionary
+                                            get using *
+            def fn(*X)
+                pass
+            fn(12,23,43,23,12,32)
+
+            Keyword arbitary argument -->  use when we have to pass key and value..i.e relational data  
+                                           The data is give in form of dictionaryā
+                                           get using **
+            def fn(**X)
+                pass
+            fn(name = "deep ",age = 21,city = "pune")
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q6. What is lambda function 
+    lambda function --> nameless function
+                        def keyword is not used for function defination..
+                        so we defined these using lambda keyword
+                        There is no need to write return statement
+                        for multiple operations we use tuple
+                        reduces code
+                        but can't use comditions in it (like if else)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q7. what is high order function
+    Higher order function --> functon which is getting other function as argument is called as higher order function
+                            e.g..pre-built hof in pythons are
+                                filter()
+                                map()
+                                reduce()
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q8. Explain filter function with example
+    syntax :
+    filtre(fun,seq)             we passing function and sequence in it and filter function filter the sequence according to the logic in passed function
+                                mostly we used realtonal operators in filter function  (*NOTE = lambda's expression can use any operator)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Q9. Program 
+l = [11,4,8,12,18,14,20]
+f = list(filter(lambda num: num%4 == 0, l))
+print(f)
+
+WAP to print list of student name(fail)
+result={"jay":30,"pradeep":67,"rajesh":37,"mandar":90,"atul":34}
+fail = list(filtre(lambda i:result[i]>40,result))
+print(fail)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+"""

@@ -1,0 +1,7 @@
+
+"""
+name attribute == help to get at backend or to identified a perticular a textbkx
+Table =
+list have two two types --> ourderd list = <ol>
+                            unorderd list = <ul>
+"""
