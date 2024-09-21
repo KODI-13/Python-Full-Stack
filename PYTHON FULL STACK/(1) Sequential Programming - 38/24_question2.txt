@@ -1,0 +1,15 @@
+"""
+Q.1 what is dynamc programing language
+in dynamic programng language there is no need to data type of variable 
+
+Q.2 what is diff between tuple and list 
+            List                                            Tuple
+        Comma sep.[]                                    comma sep. () 
+        '[]' mendatory                                  '()' not mendatory 
+        mutable                                         Imutable 
+        it required more memory                         it required less memory 
+        excution is slow                                exectuion is fast 
+        less efficient in memory utilization            more efficient in memory utilization
+        unpacking                                       both(packing and unpacking) 
+        used when data is unfixed                       used whhen you have to do exection fast on fixed data
+"""

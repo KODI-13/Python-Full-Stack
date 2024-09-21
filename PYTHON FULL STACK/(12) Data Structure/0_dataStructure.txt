@@ -1,0 +1,17 @@
+data structure = d.s are the building blocks that help us to built softwares. in precisely d.s are collection of data that is organised and store at particular location in memory and you can efficiently perform operations on them..e.g array, linked list and tree
+
+BIG o Notstion == mesuring how running time and space requirments for your program grows as input size grows
+                    if the time is linearly grows as input size grows so the time complexity is Order of N i.e. O(n)
+                     e.g def foo(arr)           size(arr) == 100 then --> it takes 0.22 milisecpnd
+                                                size(arr) == 1000 then --> it takes 2.04 milisecond 
+
+                    if the time is almost constant means grows or changesw little bit as input size grows so the time complexity is Order of 1 i.e. O(1)
+                     e.g def foo(arr)           size(arr) == 100 then --> it takes 0.22 milisecpnd
+                                                size(arr) == 1000 then --> it takes 0.23 milisecond 
+
+                    for measuring time growth we have time complexity
+                    for measuring space growth we have space complexity --> do everithing with better perforfmance --> complexity O(log n)
+
+
+lined list --> insertion time complexity for array(list) is O(n) 
+               array store data at contigous memory location where linked list store the data at random position but linkied with pointers

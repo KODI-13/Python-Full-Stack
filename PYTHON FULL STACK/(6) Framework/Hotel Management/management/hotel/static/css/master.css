@@ -1,0 +1,270 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+    min-height: 100%; 
+    display: flex;
+    flex-direction: column;
+}
+
+nav{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    padding: 10px 90px;
+    box-sizing: border-box;
+    background: rgba(0,0,0,0.6);
+    z-index: 1;
+}  
+
+nav .logo{
+    padding: 22px 20px;
+    height: 90px;
+    float:left;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+
+}
+
+nav ul{
+    list-style: none; 
+    float: left;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+}
+
+nav ul li a{
+    line-height: 80px;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+nav ul li a:hover{
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 6px;
+}
+
+footer{
+    margin-top: auto;
+    background: #000;
+    width: 100%;
+    height: 250px;
+    padding: 20px;
+    margin-bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+html{
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+footer .logo{
+    margin-top: 10px;
+    height: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    margin-left: 10px;
+    text-align: center;
+}
+
+footer ul{
+    margin-left: 30px;
+    list-style: none; 
+    float: left;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+}
+
+footer ul li a{
+    line-height: 90px;
+    color: #fff;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: 115px;
+}
+
+footer .lo{
+    margin-top: 10px;
+    text-transform: uppercase;
+    color: #fff;
+    margin-right: 0px;
+    text-align: center;
+}
+
+#d1{
+
+    margin-left: 30px;
+    border-radius: 30px;
+    position: absolute;
+    transition: transform 0.3s;
+
+}
+#d1:hover{
+    transform: scale(1.1); /* Scale up on hover */
+
+}
+
+
+#d2{
+    text-align: center;
+}
+
+#d3{
+    text-align: justify;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#d4{
+    text-align: justify;
+    padding: 15px;
+    padding-top: 110px;
+    background-color: #222;
+    color: #fff;
+}
+
+#d5{
+    background-color: #222;
+    color: #fff;
+}
+
+#d6{
+    padding-top: 110px;
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+}
+
+#d7{
+    margin-top: 10px;
+    text-align: justify;
+    margin-left: 40px;
+    margin-right: 25px;
+}
+
+#d8{
+    height: 380px;
+    background-color: rgb(118, 118, 118);
+    color: #fff;
+    text-align: justify;
+    border-radius: 10px;
+}
+
+
+#d9{
+    color: #000;
+    text-align: center;
+    border-color: #000;
+}
+
+#d10{
+    background: rgb(118, 118, 118);;
+    border-radius: 6px;
+    color: #000;
+}
+
+#d10:hover{
+    background-color:rgb(118, 118, 118);
+    border: 1px solid #fff;
+    border-radius: 5px; 
+    color: #fff;
+
+}
+
+.d100{
+    background: rgb(118, 118, 118);;
+    border-radius: 6px;
+}
+.d100:hover{
+    background-color:rgb(118, 118, 118);
+    border: 1px solid #fff;
+    border-radius: 5px; 
+    color: #fff;
+}
+
+#d11{
+    color:#000;
+}
+#d11:hover{
+    color: #fff;
+}
+
+#d12{
+    background-color: #222;
+    color: #fff;
+    padding-top: 100px;
+    padding-bottom: 0px;
+    height: 700px;
+    width: 100%;
+}
+
+#d13{
+    height: 600px;
+    width: 600px;
+    padding: 20px;
+    margin-top: 30px;
+    float: left;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+/* .card{
+    width: 200px; Adjust card size as needed
+    height: 150px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    font-size: 18px;
+    margin-right: 10px; Adjust spacing between cards as needed
+    display: inline-block;
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  
+  .slider {
+    display: inline-block;
+  }
+  
+  .card {
+    width: 200px; Adjust card size as needed
+    height: 150px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    font-size: 18px;
+    margin-right: 10px; Adjust spacing between cards as needed
+    display: inline-block;
+  }
+   */
+  

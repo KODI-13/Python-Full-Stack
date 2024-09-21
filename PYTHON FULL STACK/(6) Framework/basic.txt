@@ -1,0 +1,70 @@
+Frameworf --> it is predefined structure which is use to create/design web application
+              django 
+              flask
+              
+url --> stands for uniform resource identifier
+        use to accesss web pages
+
+There is difference between tag and element 
+tag = <h1> these start tag singly considerd as a tag
+element = the entire <h1></h1> tag is called as element
+
+django is "MVT" structure means m = models v = view and t = templatees
+
+pip = is a python package manager use to instll neccessary packges
+
+# how to install django
+          check the packges list using "pip list" command
+step 1 == install virtual environment using """pip install env""" command
+
+step 2 == we have to create virtual environment folder using """py -m venv folder_name""" command
+
+step 3 ==  after creeating virtual environment you have to activate the virtual environment 
+           for these you have to go in cmd and using commands you have to go inside in the Scripts folder and reach to  activate file
+           e.g
+            """folder_name\Scripts\activate.bat"""  
+
+step 4 == you have to download django using """pip install django""" command
+          we can intstall this in virtual environment or in entire system
+          we must have to activate venv before intall django
+
+step 5 == we have to project folder with the help of django-admin using 
+            """django-admin startproject myproject"""
+            "django-admin" command gives the sub-command of django (*NOTE = if you don't know the commands of django)
+
+step 6 == after creating myproject we have to create myapp in the myproject folder with the help of python manager.py 
+         to access mange.py first we need to change directory and enter to myproject folder 
+         to do this use following command 
+         """cd myproject"""
+
+step 7 == after changing directory we will create myapp in the myproject folder with the help of python manager.py  using following command
+            """py manage.py startapp myapp"""
+
+step 8 == to check if our project is created successfully or not we will wse following command
+            """py manage.py runserver"""
+
+
+step 1 == intalled the app you have created
+          for that follow the following path
+          myproject --> settings.py --> line no 33...write yoour application name in the INSTALLED_APPS
+
+step 2 == in myproject there is urls.py file where you can create url of your webs using path function
+                path("url_name/",the function name which will we get when the url_name is called )
+          in myapp there is view.py file where we create functions which will linked to a specicific url_name 
+          (*NOTE = These function in views.py get request from user and response as html pages, etc )
+
+step 1 == you can create table inside models.py file 
+         for that you have to create a class and inherit it with a Model class
+         and you write field inside the class you have created
+        after creating fields you have to make migratins using following command 
+        """py manage.py makemigrations"""
+
+step 2 == after applying makemigrations you have to do migrate using following command
+                """py manage.py migrate"""
+
+css videos java images
+
+css have three types
+1) inline css--> use when we want to apply css on a specific line
+2) internal cs  --> the css apply on entire swingle page 
+3) external css -- > the external css file is use to style all html pages 

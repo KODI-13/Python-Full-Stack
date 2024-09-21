@@ -1,0 +1,355 @@
+djangorestframework
+markdown
+dajngo-filter
+
+
+
+index -->
+            ~ api
+            ~ web api/ web service
+            ~ rest 
+            ~ rest api
+            ~ django rest freamework
+            ~ how rest framewrok works without using rest freamework
+            ~ how rest framewrok works using rest freamework
+
+
+API --> one software application can communicate with another softwere application irrespective of platform(os) and languages                           common langague(protocol) using any softwere applicxation can communcate with eah other is http
+        for e.g java application communicate with django application                                                                                    common message format is xml/json
+        advatage --> interoperability
+
+web api/ web services --> web application can communicate with other application using http protocol
+                                            or 
+                         the api created in order to access the services of web
+                         for e.g --> python application want to communicate with django application
+                         there are two types of web services --> SOAP API (simple access object protocol__ only support xml based message format __ xml is heavy weight and thats why required high bandwidth in order travel data over internet...and thats why parsuing xml makes process slow)
+                                                                 RESTful Api
+                SOAP                                                         REST
+        xml based message protcol                                           arichtectural style.. not a protcol
+        wsdl required for comunication between consumer and provider        no special languaage required
+        by using RPC method calls we can consume soap based services        by using URL path we can consume rest servioces
+        does not return humal readable reuslt                               json so human rreadable
+        heavy weight                `                                       light weight
+        more bandwidth                                                      less bandwidth
+        supoport multiple protocle like http, smtp, ftp                     proctol having uri i.e. mostly http
+        performance is less                                                 more performance
+        more secured                                                        less secured
+        no limit on length of data                                          limit on length of data
+
+rest --> arichtectural syle
+         guidlines provided in oreeder to develop light weight wewb api very easily
+         represatatiional state transfer--> each url is representation of an object
+                                            we can get the contetns of the object and perform operation using http verbs
+                                                            or we can say that
+                                            by using http verbs we can peroform operation on that object
+                                            like getting contents of that object i.e. get
+                                                 creating contents for that object i.e. POST
+                                                 updating that object i.e. PUT
+                                                 Deleting that objerct i.e. DELETE
+
+ rest api --> the api which are developed using rest are called as rest api/restful api/ restful webservices
+
+ django rest framework --> to develop restful api required several tools and these tool is going to provide by django rest framework
+                           these tools means packages and library
+
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ http methods/https verbs
+ GET  --> to get one or more resources
+ POST --> to create a new resource
+ PUT --> to full update a resource
+ PATCH --> to partical update a resource
+ DELETE --> to delete a resource
+ etc.., like
+ HEAD
+ CONNECT
+ TRACE
+ MOVE
+ LOCK
+ PROFIND
+ etc.,,
+
+
+ DATABASE CRUD operation vs http methods
+ C --> create -->  POST
+ R --> reaf/ REtrive --> GET
+ U --> update --> PUT/PATCH
+ D --> DELETE --> DELETE
+
+====================
+withoutrest NOTES
+====================
+
+
+================================
+start after withoutrestm NOTES 
+================================
+
+
+***************************************************************************************************************************************
+Developing WEB APIs by using 3rd party Django REST Framework(DRF)-->
+
+there are multiple 3rd party frameworkare availabl;e to create web api
+1) DRF
+2) Tastify
+etc
+
+speaciality of DRF--->
+                  1) provides browsable API
+                  2) inbulid Security (Basic authentication, token authentication, oAuth authentication, JWT(json window authenticattion)) by providing several packges
+                  3) provide inbuild Serializers which supports both orm databases and non-orm databases
+                  4) Extensive Documentation and great community supports
+
+*NOTES = djangoproject.com     ...website
+         django-rest-framework.org  ...website
+
+
+index -->
+          Serializers        -- normal serializer                     perform 3 activities as mentioined below....for difference check ss
+                                Model serializer                      perform 3 activities as mentioined below....for difference check ss
+
+          Views              -- APIView
+                                ViewSet
+
+          authentication &
+          authorization
+         
+          Pagination
+
+          Filtering &
+          ordering
+
+          Nested Serializers
+
+          Basic Authentication &
+          Session Authentication
+
+**********************************************************************************************************************************************************************
+
+Serializers
+===================
+withrestc1 NOTES
+===================
+DRF serializers responsible for 3 activities
+1) Serialization
+2) Deserialization
+3) Validation
+
+*NOTES= DRF serializers access forms and ModelForms ....check screeshot
+
+1) Serialization --> the process of coverting complex types (like model instance or query set) to python native data (like dict) is called as serialization
+                employee object to dictionary --> converting it into json is very easy
+
+                1) create Employee Model
+                2) create serializer for employee model in the serializers.py
+                3) peform makemigrations and migrate
+                4) create superuser
+
+                qs = Employee.objects.all()
+                eserializer = EmployeeSerializer(qs, many=True)
+                eserializer.data
+
+                import rest_framework.renderers import JSONRenderer
+                json_data = JSONRenderer().render(eserializer.data)
+
+                ==========================================
+                for these check get method of withrestc1
+                ==========================================
+                
+
+
+2) Deserialization --> the process of converting python native data type into database supported complex types is called deserialization
+
+                1) converting json data to python native data type  ...beacuse data coming from partner applicaton in the json format
+                import io 
+                import rest_framework.parsers import JSONParser
+
+                stream = io.BytesIO(json_data)
+                pdata = JSONParser().parse(stream)
+
+                serializer = EmployeeSerializer(pdata)
+                serializer.is_valid()
+                serializer.validated_data       ...it is database supported object
+
+                ===================================================
+                for these check post and put method of withrestc1
+                ===================================================
+
+3) Validation -->
+                there are 3 ways  ---     emp object contaion fields lie eno, ename, esal, eaddr
+                A] Field level validations
+                        validaton realted to perticular field like esal minimum 5000
+                B] Object level validations
+                        validation realted to multiple fields simultaneosuly like if ename is sunny then compulsory eal should be minum 50000
+                C] by using Validators 
+                        thses validator are inbuilt validators
+
+**********************************************************************************************************************************************************************
+
+Views --> DRF provides 2 classes to define business logic for our api Views
+          1) APIView
+          2) ViewSet
+==============================================================
+check NOTES of withrestc2 for overview of APIView and ViewSet
+==============================================================
+
+*NOTE = DRF provides special class called as Response() which is responsible for converting python dict to json data
+
+================================
+start after withoutrestc2 NOTES 
+================================
+
+1) APIView --> it is a child clas of view
+               get(), post(), put(), delete(), etc,
+               we have to write code explicitly...complete control over the logic
+               clear execution flow
+               complex operations like working with multiple data sources
+               calling over 3rd parties
+               we have to map views to urls manually
+               
+               ===============================================================
+               for detail information about APIView go for withoutrestc3 NOTES
+               ===============================================================
+
+
+2) ViewSet --> list(), create(), retrive(), update(), partial_update(), destroy()
+               Devloping very simple APIs
+               CRUD API
+               Router concenpt
+        
+               ===============================================================
+               for detail information about ViewSet go for withoutrestc4 NOTES
+               ===============================================================
+
+
+*NOTES = POSTMAN is 3rd party tool to test API, (web services developed in any languages can be tested by it)
+
+
+**********************************************************************************************************************************************************************
+
+authentication & authorization -- To provide Security to our end point we used authentication & authorization
+
+        authentication                                                                authorization
+the process of vallidating user or request                            the process of validating access permisson 
+whetere this person/ request is valid or not                          of user is called as authorization
+is called authentication
+e.g. username and passwords, tokens                                   after authentication, we have to perform authorization
+
+to implement authentication DRF provides several inbuilt              DRF provides several permisson classes to implement
+authentication mechanisms                                             authorization
+1) Basic Authentication                                               1) AllowAny (any user can ascces)
+2) Session Authentication                                             2) IsAuthenticated (only authenticated user can access)
+3) Token Authentication                                               3) IsAdminUser (if user is admin then can access)
+4) JWT(Json web token) Authentication                                 4) IsAuthenticatedOrReadOnly (any person can perrform read only ooperation but only authenticated person can perform write option)
+etc,                                                                  5) DjangoModelPermission
+                                                                      6) DjangoModelPermissionOrAnonReadOnly
+
+                                                                      READ Operation : GET, OPTIONS, HEAD  ==> safe methods
+                                                                      Write Operatioin : POST, PUT, PATCH, DELETE
+
+
+Token authentication --> authentication can be performed by using some token is called token authentication
+                         naative desktop client, mobile client
+                         for every user TOKEN must generated
+                         for every reuqest TOken must be validated
+
+                         to perform token management there is inbuilt application provided by DRF called as authtoken
+                         steps --> 1) include authtoken application inside installed apps of settings.py
+                                   2) genrated tokens are saveed in the tokens table so perform migarate in order to create Tokens table
+
+               ==========================================================================================
+               for detail information about Authentication and authorization go for withoutrestc4 NOTES
+               ==========================================================================================
+
+********************************************************************************************************************************************************************************************
+
+Pagination --> when there are multilpe dataset(resorces) availale then in order to show them it is recommended to use pagination concept
+               DRF provides several pagination classes --> 
+                                                           1) PageNumberPagination --> we can access resources by page that's why by default is called as PageNumberPagination
+                                                           2) LimitOffsetPagination --> 
+                                                                                        40 resources starts from 56th index(57 record)
+                                                                                        limit : 40    ..... Default value for limit is PAGE_SIZE define in settings.py
+                                                                                        offset : 56   ..... Default value for offset is PAGE_SIZE define in settings.py
+                                                                                        
+                                                           3) CursorPAgination --> if we want resource in certain order then we use CursorPAgination
+                                                                                   for e.g. To get all records according to acsending order of employee salaries but 5 per page
+               Enable pagiination globally -->
+                                                in the settings.py
+                                                REST_FRAMEWORK={
+                                                        'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPaginatiion',
+                                                        'PAGE_SIZE':10,
+                                                }
+               Enable pagiination locally --> 
+                                                In the perticular view class
+                                                class EmployeeAPIView(genric.ListAPIView):
+                                                        ....
+                                                        Pagination_class = PAgeNumberPagination
+
+               =====================================
+               for these check wpagination_project
+               =====================================
+               
+********************************************************************************************************************************************************************************************
+
+DRF Filtering --> we can implement filtering in 2 ways
+                  1) plain vanilla filtering --> without using DRF API we can create our own filtering
+                                                 by overiding get_queryset() method
+
+                  2) By using DRF API --> a) add filter backend in setttings.py
+                                             DRF Filtering provides supports for ordering
+                                             REST_FRAMEWORK = {
+                                                              'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.SearchFilter', 'rest_framework.filters.OrderingFilter'),
+                                                              'SEARCH_PARAM': 'mysearch'               # default value for searc_param is 'search'
+                                                              }
+
+                                          b) and in the views.py add
+                                             class EmployeeListView(generics.ListAPIView):
+                                                        ......
+                                                        search_fields = ('ename','eno')  # search based on ename and eno
+                                                        search_fields = ('^eno') # search based on eno starts with perticular number
+                                                        search_fields = ('=eno') # search based on eno with exactly provided eno
+
+                                                        ordering_fields= ('eno','esal') # ordering based on eno and esal if these fields are not specified then default value is '__all__'
+
+                  =====================================
+                  for these check wpagination_project
+                  =====================================
+
+********************************************************************************************************************************************************************************************
+
+Nested Serializers --> serializer inside another serializer is called as Nested Serializers
+                       ============================================
+                       for these check xnestedserializers_project
+                       ============================================
+
+********************************************************************************************************************************************************************************************
+
+Basic Authentication --> not recommended in production beacuse security is less
+                         with every request we have to provide username and password
+                         1) username and password will send to the server in base-64 encoding, which is not secured
+                         2) we can not customize look and feel of authentication format
+
+Session Authentication --> django default authentication mechnisms...django inbulit application (auth)
+                           auth application related urls we have to add in urls.py so that we can use auth application url services
+
+                        ============================================
+                        for these check ybasic_sessionauth_project
+                        ============================================
+                                
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+swagger --> to test API Functionality
+            to get Documentation for API
+            steps -->
+                     1) pip install django-rest-swagger
+                     2) in settings.py add 'rest_framework_swagger' in installed apps
+                     3) define urls pattern in urls.py
+                        from rest_framework_swagger.views import get_swagger_view
+
+                        schema_view = get_swagger_view(title='Employee API Functionality Testing by using Swagger')
+
+                        urlpatterns = [
+                                .....
+                                path('docs/', schema_view)
+                        ]

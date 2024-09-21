@@ -1,0 +1,224 @@
+Q1 what are data type in python
+	there are two types of data-type in python 
+	1) Fundamental --> int
+			   float
+			   string
+		    	complex
+			   boolean
+	2) collectvtive --> list
+			    tuple
+			    set
+			    dictionary
+			    frozenset
+			    none
+Q2 dynamic vs static
+dynamic programming language --> in dynamic programming language there is no need to specify the data of variables ....e.g python is dynamic programming language
+static programming language --> in static programming language we need to define the data of variables ....e.g java is static programming language
+
+Q3 advantages of python
+	1) python is simple programming language
+	2) it is a interpreted language so it intereprete code line by line and if any error occur it stop execution
+	3) python is dynamic programming language where there is no need to specify the data of variables
+	4) python is general purpose language
+
+Q4 functional programming and advantages of it
+ functional programming --> it has two parts that is function defination and function calling
+				function defination --->
+							syntax:  def fun_name():
+									pass
+				function calling --->
+							syntax: fun_name()
+									
+			    def is a keyword use to define a function
+			    it is called as user-defined function 
+ advantages ---> 1) it reduces code length
+		 2) we can reuse it 
+		 3) we can import function from one file to another
+Q5) 
+		list 							tuple
+	1) comma separted value within []			comma separted value within ()
+	2) [] it is mandetory 					() it is not mandetory
+	3) list is mutable 					tuple is immutable	
+	4) it required more memory for executiopn		it reuired less memory for execution
+	5) less efficient in memory utilization 		more efficient in memory utilization
+	6) exectuion is slow 					execution is fast
+	7) support unpacking 					support both packing and unpacking
+
+Q6 conditonal statement --> use to control the flow of statement
+			    it has three types
+				1) if statement ---> use when we have to put a (one) condition
+						     if keyword use for if statement
+							syntax:
+								if condition:
+									#body_if
+
+      				2) if else --> use when we have two option 
+						but in those two opition only one will get selected that is only one block will run in if else statment
+						if and else keyoreds are used for if else statement
+							syntax:
+								if condition:
+									#body_if
+								else:
+									#body_else
+
+      				3) if elif else --> use when we have multiple option 
+						but in those opition only one will get selected that is only one block will run in if elif else statment
+						we can put multiple elif condtions
+						if , elif and else keyoreds are used for if else statement
+							syntax:
+								if condition:
+									#body_if
+								elif contion:
+									#elif_body
+								else:
+									#body_else
+Q7 what is olambda function explain with exqample
+it is a nameless function
+def keyword is not use for function defination
+so we use lambda keyword for its defination
+there is no need to write retuen statement 
+it reduces code length
+syntax :     lambda arg:expression
+
+example : square = lambda num : num**2
+	  sq = square(5)
+	  print(sq)
+
+Q8 what is hof and built-in hof
+Higher order function --> functon which is getting other function as argument is called as higher order function
+                          e.g..pre-built hof in pythons are
+                               filter()
+                               map()
+                               reduce()
+syntax :
+filtre(fun,seq)              we passing function and sequence in it and filter function filter the sequence according to the logic in passed function
+                             mostly we used realtional operators in filter function  (*NOTE = lambda's expression can use any operator)
+
+Map --> Higher order function (functon which is getting other function as argument is called as higher order function)
+        It takes sequence also as Argument
+        Used when we have to work on each number (i.e dealt with each every number)
+
+Reduce --> Higher order function (functon which is getting other function as argument is called as higher order function)
+           reduce the sequence into single value 
+
+Q9 diff between is and ==
+ is (it checks the whether the memory location of two variable is same or not and always return value in boolean format)
+== operator return output in boolean format and it compares both side if they are equal or not
+
+Q10
+
+how to add data / element in list -->
+append() add data or value into list at end              syntax: var_name.append(value)
+insert() add data or value at perticular location        syntax: var_name.insert(index_no , value)
+
+how to access data from list -->
+1)indexing --> used when fetch the single data               syntax: var_name[index_no]
+2)slicing --> used when fetch the Multiple data              syntax: var_name[start index : end_index - 1: step value] 
+        start index  --->start  (*NOTE = By default 0)
+        end_index ----> end_index-1 (*NOTE = By default len(list))
+        step value ---> +1 (*NOTE = By default + 1)
+                Left to right step value +1 
+                right to left step value -1 
+
+how to update value -->
+by using indexing and indexing                  syntax: var_name[index_no] = update_value
+
+how to delete value from list --->
+remove() this function is used to delete data from list                                         syntax: var_name.remove(value)
+pop() this function is used to delete last data from list and return deleted value              syntax: var_name.pop() or   syntax: var_name.pop(index_no)
+del() this function is used to delete data from list                                            syntax: del var_name[index_no] (*NOTE = syntax: del var_name It delete variable)
+clear() this function is used to clear all data from list                                       syntax: var_name.clear() (*NOTE =  It clear list does not delete variable)
+			
+
+
+Q1
+num = int(input("enter a number: "))
+l = []
+for i in range(2,num):
+	if num%i == 0:
+		l.append(i)
+	else:
+		continue
+count = 1
+for i in l:
+	count = count + i
+	if count == num:
+		print("it is armstrong number")
+		break
+else:
+    print("it is  not armstrong number")
+
+Q2 
+pass = []
+fail = []
+for i in result:
+	if result[i] >=40:
+		pass.append(i)
+	else:
+		fail.append(i)
+print(pass)
+print(fail)
+
+
+
+Q3.wap to filter even number from given list
+l = [11,22,33,44,55,66]
+def f:
+  even = []
+  for i in even:
+      if i%2==0:
+      	 even.append(i)
+v = filter(f,l)
+print(v)
+
+Q4.wap to check number is armstrong or not
+l = [1,2,5,6,9,23,34,56,153]
+for i in l:
+    lenth = len(str(i))     #3
+    # print(lenth)
+    num2 = str(i)   #153
+    sum = 0
+    for j in num2:
+        sum = sum + int(j)**lenth
+        if sum == i:
+            print(i)
+            break 
+    else:
+        continue
+
+
+Q.5wap to performopr likes add,sub,div,mul on two numbers (calci)
+# menus
+print("Calculator")
+print("1.Add")
+print("2.Substract")
+print("3.Multiply")
+print("4.Divide")
+
+# input choice
+ch=int(input("Enter Choice(1-4): "))
+
+if ch==1:
+    a=int(input("Enter A:"))
+    b=int(input("Enter B:"))
+    c=a+b
+    print("Sum = ",c)
+elif ch==2:
+    a=int(input("Enter A:"))
+    b=int(input("Enter B:"))
+    c=a-b
+    print("Difference = ",c)
+elif  ch==3:
+    a=int(input("Enter A:"))
+    b=int(input("Enter B:"))
+    c=a*b
+    print("Product = ",c)
+elif ch==4:
+    a=int(input("Enter A:"))
+    b=int(input("Enter B:"))
+    c=a/b
+    print("Quotient = ",c)
+else:
+    print("Invalid Choice")
+
+	

@@ -1,0 +1,65 @@
+"""
+Q.1 what is python 
+python is a simple,
+            dynamic programming language where in dynamic language there is no need to specify data type of variable (*NOTE = static programming language where data type of variable is specified ) 
+            High level means human readable language (*NOTE =  low level means only machine can understand) 
+            interpreted programming language where interpreter scan one line at a time and interprete it (*NOTE = compiler scan all code at a time and compile it) 
+            general purpose programming language
+
+
+Q.2 what is dynamic language
+in dynamic language there is no need to specify data type of variable 
+
+Q.3 what is variable
+variables are used to store data......syntax : variable_name = value 
+
+"""
+#Q.4 WAP to ADD numbers
+A = eval(input("Enter first number: "))             
+B = eval(input("Enter second number: "))
+C = eval(input("Enter third number: "))
+sum = A + B + C
+print("sum of numbers",sum)  
+
+#Q.5 WAP to print area of triangle
+Base = eval(input("Enter Base: "))             
+height = eval(input("Enter Height: "))
+area = 0.5 * Base * height
+print("Area of Triangle ",area)  
+
+#Q.6 WAP to print Perimeter of rectangle
+length = eval(input("Enter Width: "))             
+width = eval(input("Enter Height: "))
+area =  2*( length + width)
+print("Perimeter of rectangle ",area)  
+
+"""
+#Q.7 what are Data Types in Python
+Python Data Types are used to define the type of a variable 
+
+#Q.8 Explain int float string
+int is a data type Which contain Simple numericle or integer value
+Float is a data type Which contain point Or dot In numeric value
+String is a data type which give output written in double inverted commas or single inverted comma....syntax : variable_name = "value"
+
+#Q.9 Explain function of string 
+upper() = it convert string into upper case                                                     syntax = var_name.upper()
+lower() = it convert string into lower case                                                     syntax = var_name.lower()
+title() = it convert first letter of string into upper case                                     syntax = var_name.title()
+capitalize() = it convert first letter of string into upper case                                syntax = var_name.capetalize()
+len() function is to give the lenght of string and lenght is start from 1                       syntax = len(var_name)
+index() it gives index number of particular element it only gives positive index number         syntax = var_name.index("")
+count() it counts frequency of a particular element                                             syntax = var_name.count("")
+isalpha() it gives true when string contain only alphabates                                     syntax = var_name.isalpha()
+isnumeric() it gives true when string contain only number                                       syntax = var_name.isnumeric()
+isalnum() it gives true whether string contain alphabates or number and gives false on symbol   syntax = var_name.isalnum()
+isttitle() it gives true when string in title format                                            syntax = var_name.istitle()
+split() it split entire string                                                                  syntax = var_name.spilt()
+sorted() it gives of a single sorted alphabet                                                   syntax = sorted(var_name)
+It does not have sort function
+replace() it replace one word or letter into another word or letter                             syntax =var_name.replace("old_name","new_name")
+
+#Q.10 
+Output of print("city") is city
+"""
+
