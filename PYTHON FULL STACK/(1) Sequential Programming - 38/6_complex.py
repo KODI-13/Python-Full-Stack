@@ -13,8 +13,9 @@ complex number --> it consist of two parts, i.e. real part and imaginary part
          1.binary 
          2.octal 
          3.Decimal 
-         4.hexa-decimal
+         4.hexa-decimal 
 2.imaginary part must be decimcal or float 
+
 """
 
 

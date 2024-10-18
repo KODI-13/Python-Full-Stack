@@ -85,8 +85,8 @@ for i in a:
         alpha.append(i)
     else:
         num.append(i)
-p = alpha.sort()
-k = num.sort()
+alpha.sort()
+num.sort()
 alpha.extend(num) 
 s = ''.join(alpha)
 print(s)

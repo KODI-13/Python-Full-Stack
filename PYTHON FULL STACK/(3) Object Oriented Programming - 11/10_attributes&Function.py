@@ -10,6 +10,7 @@ Inbuild Functions -->  a) getattr()  = Get a named attribute from an object
 
 """
 class Employee:
+    # "jhygg"
     """This is an employee class"""         # __doc__ attributes only return documentation written here (.i.e in between class defination and constructor name)
     def __init__(self,n,r,c,age=21):
         self.name = n

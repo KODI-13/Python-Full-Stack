@@ -51,7 +51,7 @@ print("\n\nmy name is",name,"my age is",age,"i'm from",city)
 print("my name is {} i'm {} year old i'm from {}".format(name,age,city))
 print("my name is {} i'm {} year old i'm from {}".format(age,name,city)) 
 print("my name is {1} i'm {0} year old i'm from {2}".format(age,name,city))                   #using indexing
-print("my name is {n} i'm {a} year old i'm from {c}".format(a = age,n = "name",c = city))     #using key and value
+print("my name is {n} i'm {a} year old i'm from {c}".format(a = age, n = "name", c = city))     #using key and value
 
 nav = "vijay" 
 vay = 24 

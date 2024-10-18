@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'css/index.css' %}">
+    <script src="https://d3js.org/d3.v7.min.js" charset="UTF-8"></script>
+    <!-- <script src="{% static 'js/index.js' %}"> </script> -->
+
+    <title>Energy Insights Dashboard</title>
+
+</head>
+
+
+<body>
+
+<section class="container">
+    <!-- {{data}} -->
+    <center><h1>Energy Insights Dashboard</h1></center>
+    <div class="row">
+        <div class="visualize-container1">
+            <div class="header-select-container">
+                <h2>Intensity/Sector Visualization</h2>
+                <select id="sectorFilter1"></select>
+                <select id="start_YearFilter"></select>
+                <select id="end_YearFilter"></select>
+            </div>
+            <svg id="svg1"></svg>
+        </div>
+        <!-- <div class="visualization-container">
+            <div class="header-select-container2">
+                <h2>Likelihood Visualization</h2>
+                <select id="regionFilter"></select>
+                <select id="topicFilter"></select>
+                <select id="relevanceFilter"></select>
+                <select id="stYearFilter"></select>
+                <select id="edYearFilter"></select>
+            </div>
+            <svg id="svg4"></svg>
+        </div> -->
+    </div>
+    
+
+    <div class="row">
+        <div class="visualize-container1">
+            <div class="header-select-container1">
+                <h2>Topics in different regions based on relevance Visualization</h2>
+                <select id="regionFilter"></select>
+                <select id="topicFilter"></select>
+                <select id="relevanceFilter"></select>
+                <select id="stYearFilter"></select>
+                <select id="edYearFilter"></select>
+            </div>
+            <svg id="svg2"></svg>
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="visualize-container1">
+            <div class="header-select-container2">
+                <h2>Pestles in diffenet countries</h2>
+                <select id="countryFilter"></select>
+                <select id="pestleFilter"></select>
+                <select id="likelihoodFilter"></select>
+                <select id="startYearFilter"></select>
+                <select id="endYearFilter"></select>
+            </div>
+            <svg id="svg3"></svg>
+        </div>
+    </div>
+
+</section>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+    console.log("Script is loaded"); // This will confirm if your script is running
+    // console.log("Raw Energy Data:", '{{ data|escapejs }}');
+    
+    // Parse the JSON data passed from the Django view
+    let energyData = JSON.parse('{{ data|safe|escapejs }}');  
+    console.log("Parsed Energy Data:", energyData); // Log the parsed JSON string
+
+    // Check if the parsed data is an array
+    console.log(Array.isArray(energyData)); // Should return true
+    if (!Array.isArray(energyData)) {
+        console.error("Parsed data is not an array");
+        return; // Stop execution if it's not an array
+    }
+
+
+
+
+    
+    // Replace any empty sector names with "Other" also Replace missing or empty country and pestle with "Other"
+    energyData = energyData.map(dataPoint => {
+        if (!dataPoint.sector || dataPoint.sector.trim() === "") {
+            dataPoint.sector = "Other";
+        }
+        if (!dataPoint.country || dataPoint.country.trim() === "") {
+            dataPoint.country = "Other";
+            }
+        if (!dataPoint.pestle || dataPoint.pestle.trim() === "") {
+            dataPoint.pestle = "Other";
+        }
+        if (!dataPoint.topic || dataPoint.topic.trim() === "") {
+            dataPoint.topic = "Other";
+            }
+        if (!dataPoint.region || dataPoint.region.trim() === "") {
+            dataPoint.region = "Other";
+        }
+        // Set default year values (use a more appropriate default year like null or a specific year)
+        dataPoint.start_year = (dataPoint.start_year && dataPoint.start_year.trim() !== "") ? parseInt(dataPoint.start_year) : 0;
+        dataPoint.end_year = (dataPoint.end_year && dataPoint.end_year.trim() !== "") ? parseInt(dataPoint.end_year) : 0;
+        return dataPoint;
+    });
+
+
+
+
+
+
+    // Extract unique sectors and populate dropdown
+    const uniqueSectors = [...new Set(energyData.map(dataPoint => dataPoint.sector))];
+    const uniqueStart_Year = [...new Set(energyData.map(dataPoint => dataPoint.start_year))];
+    const uniqueEnd_Year = [...new Set(energyData.map(dataPoint => dataPoint.end_year))];
+
+
+    // Add "All" option to the dropdown
+    const sectorFilter1 = document.getElementById('sectorFilter1');
+    const allOption = document.createElement('option');
+    allOption.value = "All";
+    allOption.textContent = "Sectors";
+    sectorFilter1.appendChild(allOption);
+
+    uniqueSectors.forEach(sector => {
+            const option = document.createElement('option');
+            option.value = sector;
+            option.textContent = sector;
+            sectorFilter1.appendChild(option);
+    });
+
+    // Populate start year filter
+    const start_YearFilter = document.getElementById('start_YearFilter');
+    const all_StartYearOption = document.createElement('option');
+    all_StartYearOption.value = "All";
+    all_StartYearOption.textContent = "Start Year";
+    start_YearFilter.appendChild(all_StartYearOption);
+
+    uniqueStart_Year.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        start_YearFilter.appendChild(option);
+    });
+
+    // Populate end year filter
+    const end_YearFilter = document.getElementById('end_YearFilter');
+    const all_EndYearOption = document.createElement('option');
+    all_EndYearOption.value = "All";
+    all_EndYearOption.textContent = "End Year";
+    end_YearFilter.appendChild(all_EndYearOption);
+
+    uniqueEnd_Year.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        end_YearFilter.appendChild(option);
+    });
+
+
+
+
+
+
+
+
+
+
+
+    const drawChart = (data) => {
+        // Select the SVG and clear its contents
+        const svg1 = d3.select("#svg1");
+        
+        // Clear the entire SVG before redrawing
+        svg1.selectAll("*").remove();
+
+        const margin = { top: 20, right: 30, bottom: 90, left: 50 },
+                  width = 2000 - margin.left - margin.right,
+                  height = 600 - margin.top - margin.bottom;
+
+        // Append a new group inside the SVG after clearing
+        const g = svg1
+            .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+            .attr("preserveAspectRatio", "xMinYMin meet") // Ensures proper scaling
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Create scales
+        const x1 = d3.scaleBand()
+            .domain(data.map(d => d.sector))
+            .range([0, width])
+            .padding(0.5);
+
+        const y1 = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.intensity)])
+            .nice()
+            .range([height, 0]);
+
+        // Append axes
+        g.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x1))
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("transform", "rotate(-45)")
+            .attr("dx", "-0.5em")
+            .attr("dy", "0.5em");
+
+        g.append("g")
+            .call(d3.axisLeft(y1));
+
+        // X-axis label
+        g.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2)  
+            .attr("y", height + 80)  
+            .text("Sector");
+
+        // Y-axis label
+        g.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")  
+            .attr("y", -30)  
+            .attr("x", -height / 2)  
+            .text("Intensity");
+
+        // Create Tooltip
+        const tooltip = d3.select("body").append("div")
+            .style("position", "absolute")
+            .style("background", "#f4f4f4")
+            .style("padding", "5px")
+            .style("border", "1px solid #ccc")
+            .style("border-radius", "4px")
+            .style("display", "none")
+            .style("pointer-events", "none");
+
+        // Create bars
+        g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", d => x1(d.sector))
+            .attr("y", d => y1(d.intensity))
+            .attr("width", x1.bandwidth())
+            .attr("height", d => height - y1(d.intensity))
+            .on("mouseover", (event, d) => {
+                const sectorData = energyData.filter(e => e.sector === d.sector);
+                const maxIntensity = d3.max(sectorData, e => e.intensity);
+                const count = sectorData.length;
+
+                tooltip.style("display", "block")
+                    .html(`
+                        <strong>Sector:</strong> ${d.sector}<br>
+                        <strong>Max Intensity:</strong> ${maxIntensity}<br>
+                        <strong>Count:</strong> ${count}
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px");
+            })
+            .on("mousemove", (event) => {
+                tooltip.style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 25) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.style("display", "none");
+            });
+    };
+
+    // Draw the initial chart with all data
+    drawChart(energyData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Extract unique values for each filter from the data
+    const uniqueRegions = [...new Set(energyData.map(dataPoint => dataPoint.region))];
+    const uniqueTopics = [...new Set(energyData.map(dataPoint => dataPoint.topic))];
+    const uniqueRelevances = [...new Set(energyData.map(dataPoint => dataPoint.relevance))];
+    const uniqueStYears = [...new Set(energyData.map(dataPoint => dataPoint.start_year))];
+    const uniqueEdYears = [...new Set(energyData.map(dataPoint => dataPoint.end_year))];
+
+
+    // Populate Regions filter
+    const regionFilter = document.getElementById('regionFilter');
+    const allRegionsOption = document.createElement('option');
+    allRegionsOption.value = "All";
+    allRegionsOption.textContent = "Regions";
+    regionFilter.appendChild(allRegionsOption);
+
+    uniqueRegions.forEach(region => {
+        const option = document.createElement('option');
+        option.value = region;
+        option.textContent = region;
+        regionFilter.appendChild(option);
+    });
+
+
+
+    // Populate topic filter
+    const topicFilter = document.getElementById('topicFilter');
+    const allTopicsOption = document.createElement('option');
+    allTopicsOption.value = "All";
+    allTopicsOption.textContent = "Topics";
+    topicFilter.appendChild(allTopicsOption);
+
+    uniqueTopics.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = topic;
+        topicFilter.appendChild(option);
+    });
+
+
+
+    // Populate likelihood filter
+    const relevanceFilter = document.getElementById('relevanceFilter');
+    const allRelevancesOption = document.createElement('option');
+    allRelevancesOption.value = "All";
+    allRelevancesOption.textContent = "Relevances";
+    relevanceFilter.appendChild(allRelevancesOption);
+
+    uniqueRelevances.forEach(relevance => {
+        const option = document.createElement('option');
+        option.value = relevance;
+        option.textContent = relevance;
+        relevanceFilter.appendChild(option);
+    });
+
+
+    // Populate start year filter
+    const stYearFilter = document.getElementById('stYearFilter');
+    const allStYearsOption = document.createElement('option');
+    allStYearsOption.value = "All";
+    allStYearsOption.textContent = "Start Year";
+    stYearFilter.appendChild(allStYearsOption);
+
+    uniqueStYears.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        stYearFilter.appendChild(option);
+    });
+
+
+    // Populate end year filter
+    const edYearFilter = document.getElementById('edYearFilter');
+    const allEdYearsOption = document.createElement('option');
+    allEdYearsOption.value = "All";
+    allEdYearsOption.textContent = "End Year";
+    edYearFilter.appendChild(allEdYearsOption);
+
+    uniqueEdYears.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        edYearFilter.appendChild(option);
+    });
+
+
+
+
+
+
+    const drawHeatMap = (data) => {
+        // Select the SVG and clear its contents
+        const svg = d3.select("#svg2");
+        svg.selectAll("*").remove();
+
+        // Set margins and chart dimensions
+        const margin = { top: 20, right: 10, bottom: 25, left: 110 },
+            width = 1300 - margin.left - margin.right,
+            height = 370 - margin.top - margin.bottom;
+
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Extract unique topics and regions from data
+        const topics = [...new Set(data.map(d => d.topic))];
+        const regions = [...new Set(data.map(d => d.region))];
+
+        // Create scales for x (topics) and y (regions)
+        const xScale = d3.scaleBand()
+            .domain(topics)
+            .range([0, width])
+            .padding(0.1);
+
+        const yScale = d3.scaleBand()
+            .domain(regions)
+            .range([0, height])
+            .padding(0.1);
+
+        // Create color scale for intensity or count (adjust range as needed)
+        const colorScale = d3.scaleSequential(d3.interpolateBlues)
+            .domain([0, d3.max(data, d => d.relevance || d.count || d.intensity)]);
+
+        // Add X axis
+        g.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(xScale))
+            .selectAll("text")
+            .attr("y", 10)
+            .attr("x", -5)
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-45)");
+
+        // Add Y axis
+        g.append("g")
+            .call(d3.axisLeft(yScale));
+
+        // Add heatmap cells
+        g.selectAll()
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", d => xScale(d.topic))
+            .attr("y", d => yScale(d.region))
+            .attr("width", xScale.bandwidth())
+            .attr("height", yScale.bandwidth())
+            .style("fill", d => colorScale(d.relevance || d.count || d.intensity))
+            .style("stroke", "white");
+
+        // Tooltip for heatmap cells
+        const tooltip = d3.select("body").append("div")
+            .style("position", "absolute")
+            .style("background", "#f4f4f4")
+            .style("padding", "5px")
+            .style("border", "1px solid #ccc")
+            .style("border-radius", "4px")
+            .style("display", "none")
+            .style("pointer-events", "none");
+
+        g.selectAll("rect")
+            .on("mouseover", (event, d) => {
+            let valueUsed;
+            let valueName;
+            let relevanceCount; // New variable to store relevance count
+
+            if (d.relevance) {
+                valueUsed = d.relevance;
+                valueName = 'Relevance';
+            } else if (d.count) {
+                valueUsed = d.count;
+                valueName = 'Count';
+            } else {
+                valueUsed = d.intensity;
+                valueName = 'Intensity';
+            }
+
+            // Calculate relevance count for the specific topic and region
+            relevanceCount = data
+            .filter(item => item.topic === d.topic && item.region === d.region)
+            .reduce((acc, item) => acc + (item.relevance || 0), 0); // Sum up the relevance counts
+
+            tooltip.style("display", "block")
+                .html(`Topic: ${d.topic}<br>Region: ${d.region}<br>Max ${valueName}: ${valueUsed}<br>Relevance Count: ${relevanceCount}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mousemove", (event) => {
+                tooltip.style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.style("display", "none");
+            });
+
+        // Add X-axis label
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2 + margin.left)
+            .attr("y", height + margin.top + 60)
+            .text("Topics");
+
+        // Add Y-axis label
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -(height / 2) - margin.top)
+            .attr("y", margin.left - 90)
+            .text("Regions");
+    };
+
+    // Sample call
+    drawHeatMap(energyData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    // Extract unique values for each filter from the data
+    const uniqueCountries = [...new Set(energyData.map(dataPoint => dataPoint.country))];
+    const uniquePestle = [...new Set(energyData.map(dataPoint => dataPoint.pestle))];
+    const uniqueStartYears = [...new Set(energyData.map(dataPoint => dataPoint.start_year))];
+    const uniqueEndYears = [...new Set(energyData.map(dataPoint => dataPoint.end_year))];
+    const uniqueLikelihood = [...new Set(energyData.map(dataPoint => dataPoint.likelihood))];
+
+
+    // Populate country filter
+    const countryFilter = document.getElementById('countryFilter');
+    const allCountriesOption = document.createElement('option');
+    allCountriesOption.value = "All";
+    allCountriesOption.textContent = "Countries";
+    countryFilter.appendChild(allCountriesOption);
+
+    uniqueCountries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        countryFilter.appendChild(option);
+    });
+
+
+    // Populate pestle filter
+    const pestleFilter = document.getElementById('pestleFilter');
+    const allPestleOption = document.createElement('option');
+    allPestleOption.value = "All";
+    allPestleOption.textContent = "Pestles";
+    pestleFilter.appendChild(allPestleOption);
+
+    uniquePestle.forEach(pestle => {
+        const option = document.createElement('option');
+        option.value = pestle;
+        option.textContent = pestle;
+        pestleFilter.appendChild(option);
+    });
+
+    // Populate likelihood filter
+    const likelihoodFilter = document.getElementById('likelihoodFilter');
+    const allLikelihoodOption = document.createElement('option');
+    allLikelihoodOption.value = "All";
+    allLikelihoodOption.textContent = "Likelihood";
+    likelihoodFilter.appendChild(allLikelihoodOption);
+
+    uniqueLikelihood.forEach(likelihood => {
+        const option = document.createElement('option');
+        option.value = likelihood;
+        option.textContent = likelihood;
+        likelihoodFilter.appendChild(option);
+    });
+
+
+    // Populate start year filter
+    const startYearFilter = document.getElementById('startYearFilter');
+    const allStartYearOption = document.createElement('option');
+    allStartYearOption.value = "All";
+    allStartYearOption.textContent = "Start Year";
+    startYearFilter.appendChild(allStartYearOption);
+
+    uniqueStartYears.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        startYearFilter.appendChild(option);
+    });
+
+
+    // Populate end year filter
+    const endYearFilter = document.getElementById('endYearFilter');
+    const allEndYearOption = document.createElement('option');
+    allEndYearOption.value = "All";
+    allEndYearOption.textContent = "End Year";
+    endYearFilter.appendChild(allEndYearOption);
+
+    uniqueEndYears.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        endYearFilter.appendChild(option);
+    });
+
+
+
+//     const drawBabbleChart = (data) => {
+//         // Select the SVG and clear its contents
+//         const svg3 = d3.select("#svg3");
+
+//         // Clear the entire SVG before redrawing
+//         svg3.selectAll("*").remove();
+
+//         // Define margins and chart area dimensions
+//         const margin = { top: 20, right: 30, bottom: 90, left: 150 },
+//             width = 2500 - margin.left - margin.right,
+//             height = 1000 - margin.top - margin.bottom;
+
+//         // Create scales for X (Pestle) and Y (Country) coordinates
+//         const xScale = d3.scaleBand()
+//             .domain(data.map(d => d.pestle))
+//             .range([0, width]) // Full width of the chart
+//             .padding(0.1); // Adjust padding to reduce space between bars
+
+//         const yScale = d3.scaleBand()
+//             .domain(data.map(d => d.country))
+//             .range([height, 0])
+//             .padding(0.5);
+
+//         // Bubble size scale based on intensity
+//         const sizeScale = d3.scaleSqrt()
+//             .domain([0, d3.max(data, d => d.likelihood)]) // Max intensity defines max bubble size
+//             .range([0, 3]);
+
+//         // Append a group to the SVG
+//         const g = svg3
+//             .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+//             .attr("preserveAspectRatio", "xMinYMin meet")
+//             .append("g")
+//             .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//         // Create X axis occupying full width
+//         g.append("g")
+//             .attr("transform", `translate(0,${height})`)  // Position at the bottom
+//             .call(d3.axisBottom(xScale));
+
+//         // Create Y axis with a little margin on the left
+//         g.append("g")
+//             .attr("transform", "translate(0, 0)")  // No additional translation for Y-axis
+//             .call(d3.axisLeft(yScale));
+
+//         // X-axis label
+//         g.append("text")
+//             .attr("class", "x label")
+//             .attr("text-anchor", "middle")
+//             .attr("x", width / 2)  
+//             .attr("y", height + 50)  // Adjust position for visibility
+//             .text("Pestle");
+
+//         // Y-axis label
+//         g.append("text")
+//             .attr("class", "y label")
+//             .attr("text-anchor", "middle")
+//             .attr("transform", "rotate(-90)")  
+//             .attr("y", -90)  
+//             .attr("x", -height / 2)  
+//             .text("Countries");
+        
+//         // Create Tooltip
+//         const tooltip = d3.select("body").append("div")
+//                 .style("position", "absolute")
+//                 .style("background", "#f4f4f4")
+//                 .style("padding", "5px")
+//                 .style("border", "1px solid #ccc")
+//                 .style("border-radius", "4px")
+//                 .style("display", "none")
+//                 .style("pointer-events", "none");
+            
+//         // Add bubbles to the chart
+//         g.selectAll("circle")
+//             .data(data)
+//             .enter()
+//             .append("circle")
+//             .attr("cx", d => xScale(d.pestle) + xScale.bandwidth() / 2) // Centered in the band
+//             .attr("cy", d => yScale(d.country) + yScale.bandwidth() / 2) // Centered in the band
+//             .attr("r", d => sizeScale(d.intensity)) // Bubble radius based on intensity
+//             .attr("fill", "blue")
+//             .attr("opacity", 0.7) // Make bubbles slightly transparent
+//             .on("mouseover", (event, d) => {
+//                 tooltip.style("display", "block")
+//                     .html(`Pestle: ${d.pestle}<br>Country: ${d.country}<br>likelihood: ${d.likelihood}`)
+//                     .style("left", (event.pageX + 5) + "px")
+//                     .style("top", (event.pageY - 28) + "px");
+//             })
+//             .on("mousemove", (event) => {
+//                 tooltip.style("left", (event.pageX + 5) + "px")
+//                     .style("top", (event.pageY - 28) + "px");
+//             })
+//             .on("mouseout", () => {
+//                 tooltip.style("display", "none");
+//             });
+        
+// };
+
+//     drawBabbleChart(energyData);
+
+
+
+
+const drawHeatMap2 = (data) => {
+        // Select the SVG and clear its contents
+        const svg = d3.select("#svg3");
+
+        // Clear the entire SVG before redrawing
+        svg.selectAll("*").remove();
+
+        // Set margins and chart dimensions
+        const margin = { top: 20, right: 10, bottom: 25, left: 110 },
+            width = 1300 - margin.left - margin.right,
+            height = 370 - margin.top - margin.bottom;
+
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Extract unique topics and regions from data
+        const country = [...new Set(data.map(d => d.country))];
+        const pestle = [...new Set(data.map(d => d.pestle))];
+
+        // Create scales for x (topics) and y (regions)
+        const xScale = d3.scaleBand()
+            .domain(country)
+            .range([0, width])
+            .padding(0.1);
+
+        const yScale = d3.scaleBand()
+            .domain(pestle)
+            .range([0, height])
+            .padding(0.1);
+
+        // Create color scale for intensity or count (adjust range as needed)
+        const colorScale = d3.scaleSequential(d3.interpolateBlues)
+            .domain([0, d3.max(data, d => d.likelihood || d.count || d.intensity)]);
+
+        // Add X axis
+        g.append("g")
+            .attr("transform", `translate(0, ${height})`)
+            .call(d3.axisBottom(xScale))
+            .selectAll("text")
+            .attr("y", 10)
+            .attr("x", -5)
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-45)");
+
+        // Add Y axis
+        g.append("g")
+            .call(d3.axisLeft(yScale));
+
+        // Add heatmap cells
+        g.selectAll()
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", d => xScale(d.country))
+            .attr("y", d => yScale(d.pestle))
+            .attr("width", xScale.bandwidth())
+            .attr("height", yScale.bandwidth())
+            .style("fill", d => colorScale(d.likelihood || d.count || d.intensity))
+            .style("stroke", "white");
+
+        // Tooltip for heatmap cells
+        const tooltip = d3.select("body").append("div")
+            .style("position", "absolute")
+            .style("background", "#f4f4f4")
+            .style("padding", "5px")
+            .style("border", "1px solid #ccc")
+            .style("border-radius", "4px")
+            .style("display", "none")
+            .style("pointer-events", "none");
+
+        g.selectAll("rect")
+            .on("mouseover", (event, d) => {
+            let valueUsed;
+            let valueName;
+            let likelihoodCount; // New variable to store relevance count
+
+            if (d.relevance) {
+                valueUsed = d.likelihood;
+                valueName = 'Likelihood';
+            } else if (d.count) {
+                valueUsed = d.count;
+                valueName = 'Count';
+            } else {
+                valueUsed = d.intensity;
+                valueName = 'Intensity';
+            }
+
+            // Calculate relevance count for the specific topic and region
+            likelihoodCount = data
+            .filter(item => item.country === d.country && item.pestle === d.pestle)
+            .reduce((acc, item) => acc + (item.likelihood || 0), 0); // Sum up the relevance counts
+
+            tooltip.style("display", "block")
+                .html(`Country: ${d.country}<br>Pestle: ${d.pestle}<br>Max ${valueName}: ${valueUsed}<br>Likelihood Count: ${likelihoodCount}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mousemove", (event) => {
+                tooltip.style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.style("display", "none");
+            });
+
+        // Add X-axis label
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width / 2 + margin.left)
+            .attr("y", height + margin.top + 60)
+            .text("Countries");
+
+        // Add Y-axis label
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -(height / 2) - margin.top)
+            .attr("y", margin.left - 90)
+            .text("Pestle");
+
+        
+};
+
+    drawHeatMap2(energyData);
+    
+
+
+
+
+
+
+
+
+
+
+
+    // Function to filter data for the bar chart based on selected criteria
+    const filterSectorData = () => {
+        const selectedSector = sectorFilter1.value;
+        const selectedStartYear = start_YearFilter.value; // Assuming you have these variables defined
+        const selectedEndYear = end_YearFilter.value;
+
+        const filteredData = energyData.filter(dataPoint => {
+            const sectorMatches = selectedSector === "All" || dataPoint.sector === selectedSector;
+            const startYearMatches = selectedStartYear === "All" || dataPoint.start_year.toString() === selectedStartYear;
+            const endYearMatches = selectedEndYear === "All" || dataPoint.end_year.toString() === selectedEndYear;
+
+            return sectorMatches && startYearMatches && endYearMatches;
+        });
+
+        drawChart(filteredData); // Redraw bar chart with filtered data
+    };
+   
+
+    // Add event listener for the sector filter button
+    const sectorFilterButton = document.createElement('button');
+    sectorFilterButton.textContent = "Filter Data";
+    sectorFilterButton.id = "sectorFilterButton";
+    sectorFilterButton.addEventListener('click', filterSectorData);
+    document.querySelector('.header-select-container').appendChild(sectorFilterButton);
+
+
+
+
+
+
+
+    // Function to filter data for the bar chart based on selected criteria
+    const filterRegionData = () => {
+        const selectedRegion = regionFilter.value;
+        const selectedTopic =  topicFilter.value;
+        const selectedRelevance =  relevanceFilter.value;
+        const selectedStYear = stYearFilter.value; // Assuming you have these variables defined
+        const selectedEdYear = edYearFilter.value;
+
+        const filteredData = energyData.filter(dataPoint => {
+            const regionMatches = selectedRegion === "All" || dataPoint.region === selectedRegion;
+            const topicMatches = selectedTopic === "All" || dataPoint.topic === selectedTopic;
+            const relevanceMatches = selectedRelevance === "All" || +dataPoint.relevance === +selectedRelevance;
+            const startYearMatches = selectedStYear === "All" || dataPoint.start_year.toString() === selectedStYear;
+            const endYearMatches = selectedEdYear === "All" || dataPoint.end_year.toString() === selectedEdYear;
+
+            return regionMatches && topicMatches && relevanceMatches && startYearMatches && endYearMatches;
+        });
+
+        drawHeatMap(filteredData); // Redraw bar chart with filtered data
+    };
+   
+
+    // Add event listener for the sector filter button
+    const regionFilterButton = document.createElement('button');
+    regionFilterButton.textContent = "Filter Data";
+    regionFilterButton.id = "regionFilterButton";
+    regionFilterButton.addEventListener('click', filterRegionData);
+    document.querySelector('.header-select-container1').appendChild(regionFilterButton);
+
+
+
+
+
+
+
+    const filterData = () => {
+    // Get selected values from each dropdown
+    const selectedCountry = countryFilter.value;
+    const selectedPestle = pestleFilter.value;
+    const selectedLikelihood = likelihoodFilter.value;
+    const selectedStartYear = startYearFilter.value;
+    const selectedEndYear = endYearFilter.value;
+
+    const filteredData = energyData.filter(dataPoint => {
+        const countryMatches = selectedCountry === "All" || dataPoint.country === selectedCountry;
+        const pestleMatches = selectedPestle === "All" || dataPoint.pestle === selectedPestle;
+        // Ensure the likelihood comparison works by converting both values to numbers
+        const likelihoodMatches = selectedLikelihood === "All" || +dataPoint.likelihood === +selectedLikelihood;
+        const startYearMatches = selectedStartYear === "All" || dataPoint.start_year.toString() === selectedStartYear;
+        const endYearMatches = selectedEndYear === "All" || dataPoint.end_year.toString() === selectedEndYear;
+
+        return countryMatches && pestleMatches && startYearMatches && endYearMatches && likelihoodMatches;
+        });
+
+        // Update the chart with the filtered data
+        // drawBabbleChart(filteredData);
+        drawHeatMap2(filteredData);
+
+    };
+
+    // Add event listener for the filter action
+    const filterButton = document.createElement('button');
+    filterButton.textContent = "Filter Data";
+    filterButton.id = "filterButton";
+    filterButton.addEventListener('click', filterData);
+    document.querySelector('.header-select-container2').appendChild(filterButton);
+
+
+
+
+});
+
+</script>
+</body>
+</html>
+
+
+
+
+<!-- 
+// const title = [];
+// const sector = [];
+// const intensity = [];
+// const likelihood = [];
+// const relevance = [];
+// const start_year = [];
+// const country = [];
+// const topic = [];
+// const region = [];
+// const impact  = [];
+
+// const intensityPerSector = []
+// const countryPerPestle = []
+// const topicPerRegion = []
+
+// // Loop through each object in the array
+// energyData.forEach(dataPoint => {
+// //     // title.push(dataPoint.title);
+// //     // sector.push(dataPoint.sector);
+// //     // intensity.push(dataPoint.intensity);
+// //     // likelihood.push(dataPoint.likelihood);
+// //     // relevance.push(dataPoint.relevance);
+// //     // start_year.push(dataPoint.start_year);
+// //     // country.push(dataPoint.country);
+// //     // topic.push(dataPoint.topic);
+// //     // region.push(dataPoint.region);
+// //     // impact.push(dataPoint.impact);
+//     // let intensitySector = {}
+//     // intensitySector['intensity'] = dataPoint.intensity;
+//     // intensitySector['sector'] = dataPoint.sector;
+//     // intensityPerSector.push(intensitySector)
+
+//     let countryPestle = {}
+//     countryPestle['country'] = dataPoint.country;
+//     countryPestle['pestle'] = dataPoint.pestle;
+//     countryPerPestle.push(countryPestle)
+
+//     let topicRegion = {}
+//     topicRegion['topic'] = dataPoint.topic;
+//     topicRegion['region'] = dataPoint.region;
+
+//     topicPerRegion.push(topicRegion)
+// });
+// console.log(countryPerPestle);
+
+// console.log("All Titles:", title);
+// console.log("All Sectors:", sector);
+// console.log("All intensity:", intensity);
+// console.log("All likelihood:", likelihood);   
+// console.log("All relevance:", relevance);
+// console.log("All start_year:", start_year);
+// console.log("All country:", country);
+// console.log("All topic:", topic);
+// console.log("All region:", region);   
+// console.log("All impact:", impact);
+// console.log("All intensity/Sector:", intensityPerSector);
+// console.log("All Country/Pestle:", countryPerPestle); 
+// console.log("All Country/Pestle:", topicPerRegion);   -->
+
+
+    
+<!--     
+<div class="row">
+    <div class="visualization-container">
+        <div class="header-select-container">
+            <h2>Country Visualization</h2>
+            <select id="sectorFilter1"></select>
+        </div>
+        <svg id="svg1"></svg>
+    </div>
+    <div class="visualization-container">
+        <div class="header-select-container">
+            <h2>Topics Visualization</h2>
+            <select id="sectorFilter1"></select>
+        </div>
+        <svg id="svg1"></svg>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="visualization-container">
+        <div class="header-select-container">
+            <h2>Region Visualization</h2>
+            <select id="sectorFilter1"></select>
+        </div>
+        <svg id="svg1"></svg>
+    </div>
+    <div class="visualization-container">
+        <div class="header-select-container">
+            <h2>City Visualization</h2>
+            <select id="sectorFilter1"></select>
+        </div>
+        <svg id="svg1"></svg>
+    </div>
+</div> -->
+
+
+
+
+
+
+
+<!-- // Event listener for the sector filter
+sectorFilter1.addEventListener('change', (event) => {
+    const selectedSector = event.target.value;
+    const selectedStartYear = start_YearFilter.value;
+    const selectedEndYear = end_YearFilter.value;
+
+    const filteredData = energyData.filter(dataPoint => {
+        const sectorMatches = selectedSector === "All" || dataPoint.sector === selectedSector;
+        const startYearMatches = selectedStartYear === "All" || dataPoint.start_year.toString() === selectedStartYear;
+        const endYearMatches = selectedEndYear === "All" || dataPoint.end_year.toString() === selectedEndYear;
+
+        return sectorMatches && startYearMatches && endYearMatches;
+    });
+
+    drawChart(filteredData); // Redraw chart with filtered data
+}); -->
+
+
+<!-- 
+
+const drawPieChart = (data) => {
+    // Select the SVG and clear its contents
+    const svg1 = d3.select("#svg2");
+
+    // Clear the entire SVG before redrawing
+    svg1.selectAll("*").remove();
+
+    const margin = { top: 15, right: 30, bottom: 80, left: 30 },
+        width = 700 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        radius = Math.min(width, height) / 2;
+
+    // Group the data by 'topic' and count the occurrences
+    const topicData = d3.rollup(data, v => v.length, d => d.topic);
+
+    const pieData = Array.from(topicData, ([relevance, count]) => ({ relevance, count }));
+    console.log(pieData)
+    // Create a group element for the pie chart
+    const g = svg1
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
+
+    // Create a color scale for different topics
+    const color = d3.scaleOrdinal()
+        .domain(pieData.map(d => d.topic))
+        .range(d3.schemeCategory10);
+
+    // Create a pie function to calculate the angles
+    const pie = d3.pie()
+        .sort(null)
+        .value(d => d.relevance);
+
+    // Create an arc generator for the pie slices
+    const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+    // Draw pie slices
+    const arcs = g.selectAll(".arc")
+        .data(pie(pieData))
+        .enter().append("g")
+        .attr("class", "arc");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("fill", d => color(d.data.topic))
+        .attr("stroke", "white")
+        .attr("stroke-width", 1.5);
+
+    // Add labels moved slightly outward from the slice centroid
+    arcs.append("text")
+        .attr("transform", d => {
+            const [x, y] = arc.centroid(d); // Get the centroid for label positioning
+            const angle = (d.startAngle + d.endAngle) / 2; // Midpoint angle
+            const rotate = (angle * 180 / Math.PI - 90); // Convert to degrees
+            
+            // Scale the x, y to move the labels outward
+            const offsetX = x * 1.5; // Increase 1.2 or 1.5 to move further from the center
+            const offsetY = y * 1.5;
+
+            return `translate(${offsetX}, ${offsetY}) rotate(${rotate})`;
+        })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text(d => d.data.topic);
+
+    // Create a tooltip
+    const tooltip = d3.select("body").append("div")
+        .style("position", "absolute")
+        .style("background", "#f4f4f4")
+        .style("padding", "5px")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "4px")
+        .style("display", "none")
+        .style("pointer-events", "none");
+
+    // Add hover interaction
+    arcs.on("mouseover", (event, d) => {
+            tooltip.style("display", "block")
+                .html(`Topic: ${d.data.topic}<br>Count: ${d.data.count}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mousemove", (event) => {
+            tooltip.style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+};
+
+drawPieChart(energyData); -->

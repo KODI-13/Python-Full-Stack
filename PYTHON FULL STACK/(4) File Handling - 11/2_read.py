@@ -6,7 +6,7 @@ Reading data --> Methods
                   b) readline()  ... read one line                                                          syntax: file_handler.readline()
                                      we can give no of character to read but this read only in one line     syntax: file_handler.readline(size)
                                                                     
-                  b) readlines() ... return a list of lines                                                 syntax: file_handler.read()
+                  b) readlines() ... return a list of lines                                                 syntax: file_handler.readlines()
 
 Method
 tell() - this method used to find(i.e. return) the current position of pointer from beginning of file       syntax: file_handler.tell()

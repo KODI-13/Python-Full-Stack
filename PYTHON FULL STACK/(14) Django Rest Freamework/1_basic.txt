@@ -37,9 +37,9 @@ web api/ web services --> web application can communicate with other application
         no limit on length of data                                          limit on length of data
 
 rest --> arichtectural syle
-         guidlines provided in oreeder to develop light weight wewb api very easily
+         guidlines provided in order to develop light weight web api very easily
          represatatiional state transfer--> each url is representation of an object
-                                            we can get the contetns of the object and perform operation using http verbs
+                                            we can get the contents of the object and perform operation using http verbs
                                                             or we can say that
                                             by using http verbs we can peroform operation on that object
                                             like getting contents of that object i.e. get
@@ -249,7 +249,7 @@ etc,                                                                  5) DjangoM
 
 
 Token authentication --> authentication can be performed by using some token is called token authentication
-                         naative desktop client, mobile client
+                         native desktop client, mobile client
                          for every user TOKEN must generated
                          for every reuqest TOken must be validated
 
@@ -271,15 +271,15 @@ Pagination --> when there are multilpe dataset(resorces) availale then in order 
                                                                                         limit : 40    ..... Default value for limit is PAGE_SIZE define in settings.py
                                                                                         offset : 56   ..... Default value for offset is PAGE_SIZE define in settings.py
                                                                                         
-                                                           3) CursorPAgination --> if we want resource in certain order then we use CursorPAgination
+                                                           3) CursorPagination --> if we want resource in certain order then we use CursorPAgination
                                                                                    for e.g. To get all records according to acsending order of employee salaries but 5 per page
-               Enable pagiination globally -->
+               Enable pagination globally -->
                                                 in the settings.py
                                                 REST_FRAMEWORK={
                                                         'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPaginatiion',
                                                         'PAGE_SIZE':10,
                                                 }
-               Enable pagiination locally --> 
+               Enable pagination locally --> 
                                                 In the perticular view class
                                                 class EmployeeAPIView(genric.ListAPIView):
                                                         ....

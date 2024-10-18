@@ -19,7 +19,7 @@ def safe_int(value, default=0):
         return default
 
 
-with open("C:/Deepak/PYTHON FULL STACK/(10) Projects/Data Visualization/data_visualization_project/jsondata.json","r", encoding='utf-8') as f:
+with open("C:/Data Visualization/data_visualization_project/jsondata.json","r", encoding='utf-8') as f:
     data = json.load(f)
     for item in data:
         # Handle possible empty or missing date fields
@@ -51,4 +51,4 @@ with open("C:/Deepak/PYTHON FULL STACK/(10) Projects/Data Visualization/data_vis
                 )
 
         
-    print(data)  
+    # print(data)  

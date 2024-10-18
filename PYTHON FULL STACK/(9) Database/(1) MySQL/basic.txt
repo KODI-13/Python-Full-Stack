@@ -1,0 +1,483 @@
+-- -- creating a database
+-- CREATE DATABASE tem1;
+
+-- -- Deleting a database
+-- DROP DATABASE tem1;
+-- DROP DATABASE tem2;
+-- create database tem2;
+
+-- best practice when deleting a database (*NOTE = use of "IF EXISTS" keyword does not give us any error ..it just show us a warning) 
+DROP DATABASE IF EXISTS company;
+-- Creating a database
+CREATE DATABASE college;
+
+-- best practice when creating a database (*NOTE = use of "IF NOT EXISTS" keyword does not give us any error ..it just show us a warning) 
+CREATE DATABASE IF NOT EXISTS college;
+
+-- creating table 1st step i.e. use db_name
+USE college;
+
+-- creating tabale 2nd step i.e. CRAETE TABLE TABLE_NAME(
+-- COLOMN_name1 datatype constraints,
+-- COLOMN_name2 datatype constraints);
+
+-- create is keyword use to create the table and it define the structure(schema/design) of a table
+CREATE TABLE student(
+	id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT NOT NULL
+); 
+
+-- as you can drop the table also 
+DROP TABLE student;
+
+-- inserting values in the table
+INSERT INTO student VALUES(1,"DEEP",20);
+INSERT INTO student VALUES(2,"SIDHHI",21);
+
+-- Showing all data in table format
+SELECT * FROM student;
+
+-- To show all databses 
+SHOW DATABASES;
+
+-- To show all tables in the use databses (*NOTE = use database means the database we are working right now)
+SHOW TABLES;
+
+CREATE TABLE student(
+rollno INT PRIMARY KEY,
+NAME VARCHAR(50)
+);
+
+SELECT * FROM student;
+
+INSERT INTO student
+(rollno, NAME)
+ values
+ (1,"deepak"),
+ (2,"SIDDHI");
+ 
+ CREATE DATABASE XYZ;
+ USE XYZ;
+ 
+ CREATE TABLE employee(
+	id INT PRIMARY KEY,
+    name VARCHAR(50),
+    salary INT
+ );
+ 
+ INSERT INTO employee
+(id, name, salary)
+ values
+ (1,"adam",25000),
+ (2,"bob",30000),
+ (3,"casey",40000);
+ 
+ SELECT * FROM employee;
+ 
+ use college;
+ -- another syntax of using primary key and with the help of this u can make combination of two columns as primary key
+  CREATE TABLE tem1(
+	id INT,
+    name VARCHAR(50),
+    age INT,
+    city VARCHAR(20),
+    PRIMARY KEY(id, name)
+ );
+ 
+  CREATE TABLE emp(
+	id INT PRIMARY KEY,
+    salary INT DEFAULT 25000
+ );
+ 
+ INSERT INTO emp (id) values (101);
+  SELECT * FROM emp;
+ 
+----------------------------------------------------------------------------------------------------
+CREATE DATABASE IF NOT EXISTS Joins; 
+USE Joins;
+
+CREATE TABLE student(
+id INT PRIMARY KEY,
+name VARCHAR(50)
+);
+
+INSERT INTO student 
+(id, name)
+VALUES
+(101, "adam"),
+(102, "bob"),
+(103, "casey");
+
+CREATE TABLE course(
+id INT PRIMARY KEY,
+course VARCHAR(50)
+);
+
+INSERT INTO course 
+(id, course)
+VALUES
+(102, "english"),
+(105, "math"),
+(103, "science"),
+(107, "computer science");
+
+SELECT * FROM student;
+SELECT * FROM course;
+
+-- inner join syntax
+SELECT *
+FROM student as s 
+INNER JOIN course as c
+ON s.id = c.id;
+
+-- Left outer join
+SELECT *
+FROM student as s 
+LEFT JOIN course as c
+ON s.id = c.id;
+
+-- Right outer join
+SELECT *
+FROM student as s 
+RIGHT JOIN course as c
+ON s.id = c.id;
+
+-- Full outer join
+SELECT *
+FROM student as s 
+LEFT JOIN course as c
+ON s.id = c.id
+UNION
+SELECT *
+FROM student as s 
+RIGHT JOIN course as c
+ON s.id = c.id;
+
+-- Left Exclusive join
+SELECT *
+FROM student as s 
+LEFT JOIN course as c
+ON s.id = c.id
+WHERE c.id IS NULL;
+
+-- Right Exclusive join
+SELECT *
+FROM student as s 
+RIGHT JOIN course as c
+ON s.id = c.id
+WHERE s.id IS NULL;
+
+-- Full Exzclusive join
+SELECT *
+FROM student as s 
+LEFT JOIN course as c
+ON s.id = c.id
+WHERE s.id AND c.id IS NOT NULL
+UNION
+SELECT *
+FROM student as s 
+RIGHT JOIN course as c
+ON s.id = c.id
+WHERE s.id AND c.id IS NOT NULL;
+
+
+-- self join 
+CREATE TABLE employee(
+id INT PRIMARY KEY,
+name VARCHAR(50),
+manager_id INT
+);
+
+INSERT INTO employee
+(id, name, manager_id)
+VALUES
+(101,"adam",103),
+(102,"bob",104),
+(103,"casey", NULL),
+(104,"donald",103);
+
+SELECT * FROM employee;
+
+SELECT *
+FROM employee as a
+JOIN employee as b
+ON a.id = b.manager_id;
+
+SELECT a.name as manager_name, b.name
+FROM employee as a
+JOIN employee as b
+ON a.id = b.manager_id;
+
+-- Union concept 
+-- UNION remove duplicates and returjn unique values
+-- UNION ALL does not remove duplicates i.e. it returns duplicates also
+SELECT name FROM employee
+UNION
+SELECT name FROM employee;
+
+SELECT name FROM employee
+UNION ALL
+SELECT name FROM employee;
+------------------------------------------------------------------------------------------
+
+CREATE DATABASE subquery;
+use subquery;
+CREATE TABLE student(
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+marks INT NOT NULL,
+grade VARCHAR(1),
+city VARCHAR(20)
+);
+
+INSERT INTO student
+(rollno, name, marks, grade, city)
+values
+(101, "anil",78, "C","Pune"),
+(102, "bumika", 93, "A", "Mumbai"),
+(103,"chetan", 85, "B", "Mumbai"),
+(104, "dhurv", 96, "A", "Delhi"),
+(105, "farah", 82, "B", "Delhi");
+
+SELECT * FROM student;
+
+SELECT AVG(marks)
+FROM student;
+
+SELECT name, marks
+FROM student
+WHERE marks > 86.8000;
+
+-- subquery concept
+-- query for above two queries
+-- find the name of student whoes marks are greater than avg of class
+SELECT name, marks
+FROM student
+WHERE marks > (SELECT AVG(marks) FROM student);
+
+-- find the name of of student with even roll number
+SELECT rollno -- , name
+FROM student 
+where rollno % 2 = 0 ;
+
+SELECT name, rollno
+FROM student 
+where rollno IN (102, 104);
+
+-- query for above two queries
+SELECT name, rollno
+FROM student 
+where rollno IN (
+	SELECT rollno 
+	FROM student 
+	where rollno % 2 = 0 );
+    
+-- Subquery inside fROM (*NOTE = use of subquery inside from then it needs to be assign with alis)
+-- Find the maximum marks from the students of delhi 
+SELECT *
+FROM student
+WHERE city = "Delhi";
+
+SELECT MAX(marks)
+FROM (SELECT * FROM student WHERE city = "Delhi") as tem;
+
+-- the another way to do above query without using subquery
+SELECT MAX(marks)
+FROM student
+WHERE city = "Mumbai";
+
+-- Subquery inside SELECT
+SELECT (SELECT MAX(marks) FROM student), name
+FROM student;
+
+SELECT (SELECT marks FROM student), name
+FROM student;
+
+-------------------------------------------------------------------------------------------
+
+CREATE DATABASE Views;
+
+use Views;
+CREATE TABLE student(
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+marks INT NOT NULL,
+grade VARCHAR(1),
+city VARCHAR(20)
+);
+
+INSERT INTO student
+(rollno, name, marks, grade, city)
+values
+(101, "anil",78, "C","Pune"),
+(102, "bumika", 93, "A", "Mumbai"),
+(103,"chetan", 85, "B", "Mumbai"),
+(104, "dhurv", 96, "A", "Delhi"),
+(105, "farah", 82, "B", "Delhi");
+
+SELECT * FROM student;
+
+-- MySQL Views concept
+-- For creating view
+CREATE VIEW view1 as
+SELECT rollno, name, marks FROM student;
+
+SELECT * FROM view1; 
+
+SELECT * 
+FROM view1
+WHERE marks > 90;
+
+-- For deleting view
+DROP VIEW view1;
+
+SELECT * FROM view1; 
+------------------------------------------------------------------------------------------------
+CREATE DATABASE school;
+use school;
+CREATE TABLE student(
+rollno INT PRIMARY KEY,
+name VARCHAR(50),
+marks INT NOT NULL,
+grade VARCHAR(1),
+city VARCHAR(20)
+);
+
+INSERT INTO student
+(rollno, name, marks, grade, city)
+values
+(101, "anil",78, "C","Pune"),
+(102, "numika", 93, "A", "Mumbai"),
+(103,"chetan", 85, "B", "Mumbai"),
+(104, "dhurv", 96, "A", "Delhi"),
+(105, "farah", 82, "B", "Delhi");
+
+SELECT name, marks FROM student;
+SELECT city FROM student;
+SELECT DISTINCT city FROM student; -- Distinct shows unique values in the selected column
+
+-- SELECT with WHERE clause
+SELECT * FROM student WHERE marks>85;
+SELECT * FROM student WHERE city="Mumbai";
+
+-- SELECT with WHERE clause and using operators
+SELECT * FROM student WHERE marks>85 AND city="Mumbai"; 
+SELECT * FROM student WHERE marks>85 OR city="Mumbai";
+SELECT * FROM student WHERE marks BETWEEN 80 AND 90;
+SELECT * FROM student WHERE city IN ("Mumbai", "Delhi", "Punjab");
+SELECT * FROM student WHERE city NOT IN ("Mumbai", "Delhi");
+
+-- SELECT with LIMIT clause
+SELECT * FROM student LIMIT 3;
+
+-- SELECT with WHERE and LIMIT clause (i.e. using LIMIT clause on WHERE clause) 
+SELECT * FROM student WHERE marks>85 LIMIT 3;
+
+-- SELECT with ORDER BY clause
+SELECT * FROM student ORDER BY city ASC;
+SELECT * FROM student ORDER BY marks ASC;
+SELECT * FROM student ORDER BY marks DESC LIMIT 3;
+
+-- SELECT with Aggregate Functions
+SELECT MAX(marks) FROM student;
+SELECT MIN(marks) FROM student; 
+SELECT AVG(marks) FROM student; 
+SELECT COUNT(rollno) FROM student; 
+
+-- SELECT with GROUP BY clause 
+SELECT city, COUNT(rollno)
+FROM student
+GROUP BY city;
+
+SELECT city, AVG(marks)
+FROM student
+GROUP BY city;
+
+SELECT city, AVG(marks)
+FROM student
+GROUP BY city
+ORDER BY AVG(marks);
+
+SELECT city, AVG(marks)
+FROM student
+GROUP BY city
+ORDER BY AVG(marks) DESC;
+
+SELECT grade, COUNT(rollno)
+FROM student
+GROUP BY grade
+ORDER BY grade;
+
+-- select with Having Clause
+SELECT city, COUNT(rollno)
+FROM student
+GROUP BY city
+HAVING MAX(marks) > 90;
+
+SELECT city
+FROM student
+WHERE grade = "A";
+
+SELECT city
+FROM student
+WHERE grade = "A"
+GROUP BY city
+HAVING MAX(marks) > 93;
+
+SELECT city
+FROM student
+WHERE grade = "A"
+GROUP BY city
+HAVING MAX(marks) >= 93
+ORDER BY city DESC;
+
+-- Table related queries
+-- How to update data in table
+-- First you have to deactivate safe mode in order to update data using following command
+SET SQL_SAFE_UPDATES = 0; -- To deactivate safe mode
+
+SET SQL_SAFE_UPDATES = 1; -- To activate safe mode
+
+UPDATE student
+SET grade = "O"
+WHERE grade = "A";
+
+SELECT * FROM student;
+
+UPDATE student
+SET name = "bhumika"
+WHERE rollno = 102;
+
+SELECT * FROM student;
+
+UPDATE student
+SET marks = marks + 1;
+
+SELECT * FROM student;
+
+-- Deletting data from table
+INSERT INTO student VALUES(106,"JOHN", 12, "F", "Delhi");
+SELECT * FROM student;
+
+DELETE FROM student 
+WHERE marks<33;
+
+SELECT * FROM student;
+
+-- Foreign key concept
+CREATE TABLE dept(
+id INT PRIMARY KEY,
+name VARCHAR(50)
+);
+
+CREATE TABLE teacher(
+id INT PRIMARY KEY,
+name VARCHAR(50),
+dept_id INT,
+FOREIGN KEY (dept_id) REFERENCES dept(id)
+);
+
+-- To visualize above thing we have eer digram for that you have to go from databases --> reverse engineer --> selectg databseand execute and finish
+-- EER a.k.a ER digram shows how multiple tables in databases are connected
+--------------------------------------------------------------------------------------------
