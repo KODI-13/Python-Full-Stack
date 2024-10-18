@@ -20,6 +20,6 @@ from testapp import views
 import testapp.api.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.EnergyInsightViewCBV.as_view()),
+    path('', views.energy_data_json),
     path('api/', include(testapp.api.urls))
 ]

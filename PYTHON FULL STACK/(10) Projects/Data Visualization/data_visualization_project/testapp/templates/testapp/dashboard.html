@@ -1,18 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-    {%load static%}
-    <script src="{% static 'static/js/script.js' %}"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Energy Insights Dashboard</title>
+    <script src="https://d3js.org/d3.v7.min.js" charset="UTF-8"></script>
+    <style>
+        svg {
+            border: 1px solid black;
+            margin-bottom: 40px; /* Space between the two graphs */
+        }
+        .bar {
+            fill: steelblue;
+        }
+        .bar:hover {
+            fill: orange;
+        }
+    </style>
 </head>
-<body>
-    <h1>Data in the Json format</h1>
 
-    <h2>Intensity</h2>
+
+<body>
+    <h1>Energy Insights Dashboard</h1>
+    <h2>Intensity Visualization</h2>
+    <svg width="900" height="600"></svg>
+    <h2>Likelihood Visualization</h2>
+
+
     
+    <script>
+        // Energy Insights Bar Graph
+        const rawEnergyData = '{{ energyData|safe|escapejs }}';  
+        console.log("Raw Energy Data:", rawEnergyData);  
+    
+        try {
+            const energyData = JSON.parse(rawEnergyData);  
+            console.log("Parsed Energy Data:", energyData);  
+    
+            if (energyData.length === 0) {
+                console.error("No data available for visualization.");
+            }
+    
+            const margin = { top: 20, right: 30, bottom: 90, left: 50 },
+                  width = 900 - margin.left - margin.right,
+                  height = 600 - margin.top - margin.bottom;
+    
+            const svg1 = d3.select("svg:first-of-type")
+                          .attr("width", width + margin.left + margin.right)
+                          .attr("height", height + margin.top + margin.bottom)
+                          .append("g")
+                          .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+            const x1 = d3.scaleBand()
+                        .domain(energyData.map(d => d.sector))
+                        .range([0, width])
+                        .padding(0.1);
+    
+            const y1 = d3.scaleLinear()
+                        .domain([0, d3.max(energyData, d => d.intensity)])
+                        .nice()
+                        .range([height, 0]);
+    
+            svg1.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x1))
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("transform", "rotate(-45)")
+                .attr("dx", "-0.5em")
+                .attr("dy", "0.5em");
+
+            svg1.append("g")
+               .call(d3.axisLeft(y1));
+
+            // X-axis label
+            svg1.append("text")
+                .attr("class", "x label")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2)  // Center the label horizontally
+                .attr("y", height + 80)  // Position below the x-axis
+                .text("Sector");
+
+            // Y-axis label
+            svg1.append("text")
+                .attr("class", "y label")
+                .attr("text-anchor", "middle")
+                .attr("transform", "rotate(-90)")  // Rotate to vertical
+                .attr("y", -30)  // Shift slightly above the top
+                .attr("x", -height / 2)  // Center vertically
+                .text("Intensity");
+
+            svg1.selectAll(".bar")
+               .data(energyData)
+               .enter().append("rect")
+               .attr("class", "bar")
+               .attr("x", d => x1(d.sector))
+               .attr("y", d => y1(d.intensity))
+               .attr("width", x1.bandwidth())
+               .attr("height", d => height - y1(d.intensity));
+    
+            console.log("Energy Insights graph rendered.");
+        } catch (error) {
+            console.error("Error parsing energy data:", error);
+        }
+
+        // Likelihood Insights Bar Graph
+        const likelihoodData = [
+            { title: "Natural gas consumption increase", likelihood: 3 },
+            { title: "Crude oil production recovery", likelihood: 3 },
+            { title: "Petroleum consumption projection", likelihood: 3 },
+            { title: "Deforestation risk assessment", likelihood: 2 }
+        ];
+
+        const margin2 = { top: 20, right: 30, bottom: 160, left: 50 },
+              width2 = 600 - margin2.left - margin2.right,
+              height2 = 400 - margin2.top - margin2.bottom;
+
+        const svg2 = d3.select("body")
+                       .append("svg")
+                       .attr("width", width2 + margin2.left + margin2.right)
+                       .attr("height", height2 + margin2.top + margin2.bottom)
+                       .append("g")
+                       .attr("transform", `translate(${margin2.left},${margin2.top})`);
+
+        const x2 = d3.scaleBand()
+                    .domain(likelihoodData.map(d => d.title))
+                    .range([0, width2])
+                    .padding(0.1);
+
+        const y2 = d3.scaleLinear()
+                    .domain([0, d3.max(likelihoodData, d => d.likelihood)])
+                    .nice()
+                    .range([height2, 0]);
+
+        svg2.append("g")
+           .attr("transform", `translate(0,${height2})`)
+           .call(d3.axisBottom(x2))
+           .selectAll("text")
+           .style("text-anchor", "end")
+           .attr("transform", "rotate(-45)")
+           .attr("dx", "-0.5em")
+           .attr("dy", "0.5em");
+
+        svg2.append("g")
+           .call(d3.axisLeft(y2));
+
+        // X-axis label for Likelihood Insights
+        svg2.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width2 / 2)  // Center the label horizontally
+            .attr("y", height2 + 145)  // Position below the x-axis
+            .text("Likelihood Factors");
+
+        // Y-axis label for Likelihood Insights
+        svg2.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")  // Rotate to vertical
+            .attr("y", -30)  // Shift slightly above the top
+            .attr("x", -height2 / 2)  // Center vertically
+            .text("Likelihood Score");
+
+        svg2.selectAll(".bar")
+           .data(likelihoodData)
+           .enter().append("rect")
+           .attr("class", "bar")
+           .attr("x", d => x2(d.title))
+           .attr("y", d => y2(d.likelihood))
+           .attr("width", x2.bandwidth())
+           .attr("height", d => height2 - y2(d.likelihood));
+        
+        console.log("Likelihood Insights graph rendered.");
+    </script>
 </body>
 </html>
-
-<!-- <script src="//d3js.org/d3.v3.min.js"></script> -->

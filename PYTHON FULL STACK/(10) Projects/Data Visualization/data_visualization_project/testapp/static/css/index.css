@@ -1,0 +1,127 @@
+body{
+    background: linear-gradient(135deg, #153677, #4e085f);
+}
+
+.bar {
+    fill: steelblue;
+}
+.bar:hover {
+    fill: orange;
+}
+
+.container{
+    color: #002765;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+h2 {
+    /* text-align: center; */
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 30px; /* Space between rows */
+}
+
+.visualization-container {
+    width: 48%;  /* Slightly less than 50% to account for padding */
+    height: 70vh;  /* Define a precise height for the div */
+    padding: 10px;
+    background-color: white;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Prevent padding from overflowing */
+    display: flex;
+    flex-direction: column; /* Allows the h2 and svg to stack  */
+    justify-content: space-between; /* Ensures even spacing between h2 and svg */
+}
+
+
+.visualize-container1 {
+    width: 97%;  /* Take the full width for single row */
+    height: 70vh;  /* Define a precise height for the div */
+    padding: 10px;
+    background-color: white;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Prevent padding from overflowing */
+    display: flex;
+    flex-direction: column; /* Allows the h2 and svg to stack */
+    justify-content: space-between; /* Ensures even spacing between h2 and svg */
+}
+
+
+/* New class for the header and select container */
+.header-select-container {
+    /* display: flex; Use flexbox for the header and select */
+    justify-content: space-between; /* Space them apart */
+    align-items: center; /* Align items vertically centered */
+    margin-bottom: 10px; /* Space between header/select and the SVG */
+}
+
+h2 {
+    margin: 0; /* Remove default margin to avoid spacing issues */
+}
+
+select {
+    width: 120px;
+    padding: 10px; /* Maintain padding for aesthetics */
+    font-size: 16px; /* Font size for readability */
+    border: 2px solid #002765; /* Border color matching your design */
+    border-radius: 5px; /* Rounded corners */
+    background-color: white; /* Background color */
+    color: #002765; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+}
+
+
+
+.row svg {
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;  /* Ensures svg won't overflow horizontally */
+    max-height: 100%; /* Ensures svg won't overflow vertically */
+    box-sizing: border-box; /* Includes padding and border in the width/height */
+}
+
+/* Media query for smaller screens like tablets */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 5vw; /* Larger font for smaller screens */
+    }
+
+    h2 {
+        font-size: 4vw; /* Adjust heading size */
+    }
+
+    .row div {
+        width: 100%; /* Full width for each div on smaller screens */
+        height: 35vh; /* Slightly reduce height */
+    }
+}
+
+/* Media query for mobile screens */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 6vw;
+    }
+
+    h2 {
+        font-size: 5vw;
+    }
+
+    .row div {
+        width: 100%; /* Each div takes full width on mobile */
+        height: 30vh; /* Smaller height on mobile */
+    }
+}

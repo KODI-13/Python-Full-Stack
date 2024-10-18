@@ -1,0 +1,130 @@
+BASIC CONCEPTS
+
+database --> collection of data in a format that can be easily accessed
+
+database management system --> a software application used   
+to manage our database is called dbms 
+
+we use sql query language to access relational database through dbms
+
+types of dbms->  relational db (rdbms)   --> stored data in table format
+					     e.g. MySQL, sqlserver, oracle, PostgreSQL 
+
+		 non-relational db (qsl)  --> data stored in table 
+					      e.g. mogodb
+
+===============================================================================================================================================================
+INSTALLATION 
+
+postgreSQL --> we can accesss postgreSQL through pgadmin, psql shell, cmd 
+               A) pgadmin --> it is tool using which we can access it
+               B) psql shell --> to access throght it we have to give following info
+                                  server[loaclhost] :           # the thing in thee brackets are default if we didnt used other names then simply enter
+                                  Database[postgre] :           # the thing in thee brackets are default if we didnt used other names then simply enter
+                                  POst[5432]:                   # the thing in thee brackets are default if we didnt used other names then simply enter
+                                  username[postgres] :          # the thing in thee brackets are default if we didnt used other names then simply enter
+                                  Password for user postgres :  have to give Passwordthat provided during installation
+
+               C) CMD --> have to give path of postgres bin inside environmental variable
+                          and command to run it through CMD is "psql -U postgres"
+                          then it asks for password
+                          Password for user postgres :  have to give Passwordthat provided during installation
+
+===============================================================================================================================================================
+EXPLAING SCHEMAS AND DATABASE
+
+postgres --> database 
+             for e.g. instagram database 
+
+Schems --> comes inside database
+           categorized way to store data
+           for e.g. in instagram there are two main entities like public data and user data stored in different section
+                    each of them will have there tables and all others things
+
+table --> table is a collection of related data held in a table format in database
+===============================================================================================================================================================
+INDEX -->   
+            Database --> creating, connecting, listing, droping
+            CRUD --> NEw table .. inserting data,
+                                  read data,
+                                  update data,
+                                  delete data
+            datatypes
+            constraints
+                            
+===============================================================================================================================================================
+
+listing down the exisiting databases
+using cmd --> \l
+using PgAdmin --> SELECT datname FROM pg_database;
+
+===============================================================================================================================================================
+
+Creating a New Database 
+using CMD and using PgAdmin --> CREATE DATABASE <db_name>;
+
+===============================================================================================================================================================
+
+to perform operations in sepearte database 
+using cmd --> \c <db_name>;
+using PgAdmin --> simply open query tool while clicking on database name
+
+===============================================================================================================================================================
+
+deleting database 
+DROP DAtABASE <db_name>;
+
+===============================================================================================================================================================
+
+PERFORMING CRUD OPERATIONS --> CREATE, READ, UPDATE, DELETE 
+
+============================================================================================================
+creating tabale 2nd step i.e. CRAETE TABLE TABLE_NAME(
+COLOMN_name1 datatype constraints,
+COLOMN_name2 datatype constraints);
+
+create is keyword use to create the table and it define the structure(schema/design) of a table
+CREATE TABLE person(
+	id INT,
+    name VARCHAR(100),
+    city VARCHAR(100),
+); 
+
+
+to check if that perticular table exists in databse
+using CMD --> \d <table_name>;
+using pgadmin --> persondb>Schemas>Tables
+
+============================================================================================================
+inserting data or values in the table
+1st styntax --> INSERT INTO <table_name>(column_1_name, column_2_name) VALUES(column_1_value,column_2_value);
+2nd syntax --> INSERT INTO <table_name> VALUES(column_1_value,column_2_value);            use when you are providing all values
+
+INSERT INTO person
+(id, name, city)
+VALUES
+(102, 'sham', 'mumbai'),
+(103, 'paul', 'pune');
+
+-- INSERT INTO person VALUES (104, "sam", "nagpur");   NOT ALLOWED
+INSERT INTO person VALUES (105, 'sam', 'nagpur');   -- ALLOWED
+INSERT INTO person VALUES (106, 'tryon');  -- ALLOWED
+
+===============================================================================================================================================================
+updating data values in table 
+UPDATE <table_name>
+SET <column_name> = value\'value'
+WHERE id = 1;
+
+===============================================================================================================================================================
+ddeleting data or values in table
+DELETE FROM <table_name>
+where <column_name> = vales\'value';
+
+
+===============================================================================================================================================================
+datatype --> type of data stored in a column
+constraints --> it is a rule applied to a column 
+                primary key --> uniques and not null values
+                                each table can only have one primary key
+                                for e.g. instagram username or addharcard number

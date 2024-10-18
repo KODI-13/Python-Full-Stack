@@ -1,0 +1,12 @@
+database --> collection of data in a format that can be easily accessed
+
+database management system --> a software application used   
+to manage our database is called dbms 
+
+we use sql query language to access relational database through dbms
+
+types of dbms->  relational db (rdbms)   --> stored data in table format
+					     e.g. MySQL, sqlserver, oracle, PostgreSQL
+
+		 non-relational db (qsl)  --> data stored in table 
+					      e.g. mogodb

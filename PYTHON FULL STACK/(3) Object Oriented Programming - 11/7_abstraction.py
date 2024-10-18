@@ -6,7 +6,7 @@ Abstraction --> The process by which data and function are defined in such way t
 1) Abstract Class --> by using abc module we can create abstract class                                (*How to create abstract class)
                       where abc stands for abstarct base class 
                       abc module contains ABC Class and by using ABC class we can craete abstract method 
-                      abstarct class contains abstract method and non-abstarct method(normal method)
+                      abstract class contains abstract method and non-abstarct method(normal method)
                       if implementaion for each class is different then we create abstarct method 
                                                     otherwise
                       if implementaion for each class is same then we create non-abstarct method
