@@ -1,0 +1,166 @@
+Docker --> technology independent
+           Docker is a platform that helps developers build, share and run applications with Docker
+
+why use docker?
+samjho eak developer hei usne eak project pe kam kara 2 saal then 2nd developer use join karta hei 
+and vo setup karne ka try karta hei but hota nahi cause the things installed on 1st developer system 2 years ago is right now will get updated
+
+so here comes docker which has docker container consiste of everything about a project like code, runtime, system tools, system libraries and settings with specific version
+
+Download --> go to official website and just click on center download logo button
+
+======================================================================================================================================================================================================================
+
+Images --> are templates of project.
+           clone of project containing code, runtime, system tools, system libraries and settings with specific version.
+           it is kind of ready-to-use software and read-only templates.
+           images can not be updated 
+           if you want to make change in the image you have to create a new image
+           and images can not run directly
+
+container --> Running instance of an Image.
+              and with the help container we run instance of an images
+              the container is a process that run applications with the help of images
+              container is an isolated process
+              means container run independently on computer
+
+======================================================================================================================================================================================================================
+
+Docker hub --> Online tool --> access using hub.docker.com    
+Docker Desktop --> software installed on system
+
+both of above use for pulling/downloading the image and managing it
+
+======================================================================================================================================================================================================================
+
+parent/base image vs normal image 
+parent/base image--> the image which is already developed and using this image as base image we create normal image
+normal image  --> the normal image is made by us using parent/base image
+
+======================================================================================================================================================================================================================
+
+in the "(1) Node Express app" created app using node and Express after that use of docker on this app
+steps --> npm init
+          enter credentials
+          create index.js or main.js
+          installed express.js --> npm i express
+          run the app using --> node index.js
+
+
+          creating docker file using terminal --> touch dockerfile 
+                            or 
+          create using click on create file symbol in vs code and name it as dockerfile where it does not contain extension
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # .dockerfile code
+          FROM baseImage        used for adding baseimage that is necessary for project --> FROM node:latest
+
+          WORKDIR /app          the following command will run the specified directory
+
+          COPY source dest      source = copying code of source location provided     destination = the destination where the copied code is being kept  
+                                --> COPY . .
+                              
+          RUN command           running theses command (installing modules) 
+                                --> RUN npm install 
+
+          EXPOSE port           to directly run image directly from docker hub --> 1st step EXPOSE port --> EXPOSE 5000
+
+          CMD [ "executable" ]  2nd step write the command in the array --> CMD [ "executable" ] --> CMD [ "node", "index.js"]
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # building and running an image
+          run the command in terminal in order to build the image
+          docker build -t basic-app .  --> -t use to tag the image or name the image after it
+                                           "." means its going to build image in same folder
+                                        
+          after that using docker desktop run the file, in that you can add optional settings like container name and port number
+          its best practice to mention the same port number you used in your app
+          if you dont provide any port number then it means you can't run it outside of the container beacuase it is does not expose yet 
+          also you can provide "0" as port number in order to generate random port number which does not conflicts with other port numbers
+          
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # use of dockerignore file
+          use of .dockerignore file --> Mention the files and folders that we dont want to add in the image
+                                        create using click on create file symbol in vs code and name it as ".dockerignore" where it does not contain extension
+                                        for e.g. 
+                                                just write the name of files or folder that want to ignore in .dockerignore file
+                                                dummy.txt
+                                                node_modules
+                                                *.txt       ..... to ignore the specific extention files
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # deleting the image 
+          why delete the image --> iamges cant be updated and if made and update in your project so you have to create new image
+          two ways --> 
+                      1) deleting unused image == docker image rm basic-app
+                      2) deleting used image == two ways --> 
+                                                             1) directly trogh terminal == docker image rm <image_name> -f
+                                                             2) first delete its container and then delete its image == deleting container == two ways --> docker container rm <container-name>
+                                                                                                                                                           docker container rm <container-name> -f
+          two get all available images --> docker images
+          two get all available container --> docker ps -a
+          to delete all container and images --> docker system prune -a
+                                                 and give input as "y" or "Y"
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # image versioning 
+          docker build -t basic-app:v2 . --> -t use to tag the image or write the name of image after it
+                                             ":" after it we write the version of image
+                                             "." means its going to build image in same folder
+
+          # volumes 
+          to automate the process of updation
+          its store data permenantly and we can sync it with container
+          1) install nodemon --> npm i nodemon      ... nodemon acts like liveserver for node apps
+          2) update package.json --> add these in script   "scripts": {
+                                                                            .......... ,
+                                                                            "dev":"nodemon index.js"
+                                                                      },
+          3) then "npm run dev" use these comand instead of "node index.js"
+          4) update dockerfile  --> RUN npm install -g nodemon
+                                    WORKDIR /app
+                                    CMD [ "npm", "run", "dev"]
+
+          5) create container with volume using terminal with these command --> docker run --name basic-container -p 5000:5000 --rm -v /D:/Deepak/PYTHON FULL STACK/(15) Docker/(1) Node Express app:/app basic-app
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # compose file
+          why we compose file? --> we write all commands that we use in terminal in order to build the project
+          write commands inside services
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # docker hub
+          3 ways to use it
+          1) create public repo in docker hub -->  docker build -t deepakdkamble/test3 .        .. without tag name so it assign latest tag to it
+          2) pushing image to repositary      -->  docker push deepakdkamble/test3              .. without tag name so it assign latest tag to it
+          3) pull image from docker hub       -->  docker pull deepakdkamble/test3              .. pulling image from docker hub
+
+          1) create public repo in docker hub -->  docker build -t deepakdkamble/test3:t3 .     .. t3 tag will get assign to this image
+          2) pushing image to repositary      -->  docker push deepakdkamble/test3:t3           .. without tag name so it assign latest tag to it
+          3) pull image from docker hub       -->  docker pull deepakdkamble/test3:t3           .. pulling image from docker hub
+
+          1) building image in the docker desktop                               --> docker build -t airbyte/conn-airbyte-draft:dev3 .
+          2) creating public repo and tagging created image with new tag        --> docker tag airbyte/conn-airbyte-draft:dev3 deepakdkamble/shipbob-ui:tt23
+          3) pull image from docker hub                                         --> docker push deepakdkamble/shipbob-ui:tt23
+
+          ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+          # how to upload image on server and how to make application live (just for learning we are goin to use play-with-docker.com)
+          1) create repo on docker hub 
+          2) then while building image that will run on server so we have to mention the operating system that we are building image for
+                for e.g. play-with-docker.com ues "linux amd 64" operating system
+                so the command will be --> docker buildx build --platform linux/amd64 -t deepakdkamble/play-with-docker .
+          3) after building image push the changes to docker hub repo--> docker push deepakdkamble/play-with-docker
+          4) go to play-with-docker.com and sign in there and then click on start button after starting it create instance 
+          5) then pull the image on the play-with-docker.com terminal using the command mention in public view of docker hub repo
+          6) docker images --> using this command in the play-with-docker.com terminal check if image is pulled or not
+          7) Run the image on the play-with-docker.com terminal using --> docker run -p 5000:5000 <repo_name/image_name>
+
+======================================================================================================================================================================================================================

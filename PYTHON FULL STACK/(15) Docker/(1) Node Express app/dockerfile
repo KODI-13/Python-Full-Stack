@@ -1,0 +1,21 @@
+# FROM baseImage   used for adding baseimage that is necessary for project
+FROM node:latest
+
+RUN npm install -g nodemon
+
+# WORKDIR /app the following command will run the specified directory
+WORKDIR /app
+
+# COPY source dest  source = copying code of source location provided     destination = the destination where the copied code is being kept  
+COPY . .
+
+# RUN theses command (installing modules)
+RUN npm install 
+
+# to directly run image directly from docker hub 
+# 1st step EXPOSE port 
+EXPOSE 5000
+
+# 2nd step write the command in the array -- > CMD [ "executable" ]
+# CMD [ "node", "index.js"]
+CMD [ "npm", "run", "dev"]
